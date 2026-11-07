@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NMOSD Acute Attack Corticosteroid Bedside Calculator (Unified Comparative Suite)</title>
+  <style>
+
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --bg-input: #0f172a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --border-color: #334155;
+      --border-focus: #38bdf8;
+      --primary: #0ea5e9;
+      --primary-hover: #0284c7;
+      --accent-teal: #14b8a6;
+      --accent-purple: #a855f7;
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --danger-border: rgba(239, 68, 68, 0.35);
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.12);
+      --success-border: rgba(16, 185, 129, 0.35);
+      --warning: #f59e0b;
+      --card-radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 20px 16px 40px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* SWITCH BANNER */
+    .switch-banner {
+      background: rgba(14, 165, 233, 0.10);
+      border: 1px solid rgba(14, 165, 233, 0.30);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+    .switch-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .switch-link {
+      background: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      transition: background 0.15s;
+    }
+    .switch-link:hover {
+      background: var(--primary-hover);
+    }
+    .switch-link.secondary {
+      background: var(--bg-card-hover);
+      border: 1px solid var(--border-color);
+    }
+    .switch-link.secondary:hover {
+      background: var(--border-color);
+      border-color: var(--primary);
+    }
+
+    /* TABS */
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 2px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      border-bottom: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .tab-btn.active {
+      color: #38bdf8;
+      border-bottom-color: #38bdf8;
+      background: rgba(14, 165, 233, 0.08);
+    }
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* HEADER */
+    header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 16px;
+    }
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+    }
+    .badge-cyan {
+      border-color: rgba(14, 165, 233, 0.4);
+      background: rgba(14, 165, 233, 0.12);
+      color: #38bdf8;
+    }
+    .badge-teal {
+      border-color: rgba(20, 184, 166, 0.4);
+      background: rgba(20, 184, 166, 0.12);
+      color: #2dd4bf;
+    }
+    .badge-purple {
+      border-color: rgba(168, 85, 247, 0.4);
+      background: rgba(168, 85, 247, 0.12);
+      color: #c084fc;
+    }
+
+    /* PRESETS BAR */
+    .presets-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-secondary);
+      padding: 10px 14px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+    .preset-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+    .btn-preset {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-preset:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    /* MAIN GRID */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 992px) {
+      .main-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+    }
+
+    /* CARD STYLES */
+    .calc-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    /* INPUT CONTROLS */
+    .input-group {
+      margin-bottom: 18px;
+    }
+    .input-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .input-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .input-hint {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+    .input-value-badge {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #38bdf8;
+      min-width: 60px;
+      text-align: right;
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .slider-control {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--bg-input);
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .slider-control::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    .number-control {
+      width: 82px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-input);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: right;
+    }
+    .number-control:focus {
+      outline: none;
+      border-color: var(--border-focus);
+    }
+
+    /* TOGGLE BUTTONS */
+    .toggle-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .toggle-group.tri {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .toggle-opt {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+    .toggle-opt:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+    }
+    .toggle-opt.active-yes {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+      color: #f87171;
+    }
+    .toggle-opt.active-no {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: #34d399;
+    }
+    .toggle-opt.active-tier {
+      background: rgba(14, 165, 233, 0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+
+    /* RESULTS SECTION */
+    .score-hero {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 18px;
+      text-align: center;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .score-lbl {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .score-val {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .prob-display {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+    .prob-val {
+      font-weight: 700;
+      color: #38bdf8;
+      font-size: 1.15rem;
+    }
+
+    /* ALERT BOXES */
+    .alert-box {
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border: 1px solid;
+    }
+    .alert-danger {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+      color: #fca5a5;
+    }
+    .alert-success {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: #6ee7b7;
+    }
+    .alert-header {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .alert-body {
+      font-size: 0.83rem;
+      line-height: 1.45;
+    }
+
+    /* BREAKDOWN TABLE */
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+    .breakdown-table th {
+      text-align: left;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .breakdown-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      color: var(--text-main);
+    }
+    .breakdown-table td.pts {
+      text-align: right;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    /* SVG NOMOGRAM CARD */
+    .svg-nomogram-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+    }
+    .svg-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+    svg.nomogram-svg {
+      min-width: 900px;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* EMR TEXTAREA & BUTTONS */
+    .emr-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+    }
+    .emr-textarea {
+      width: 100%;
+      height: 160px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      color: #e2e8f0;
+      line-height: 1.4;
+      resize: vertical;
+      margin-bottom: 12px;
+    }
+    .emr-textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+    }
+    .emr-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .btn-action {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .btn-action:hover {
+      background: var(--primary-hover);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+      margin-top: 30px;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    
+    .tab-header-banner {
+      background: linear-gradient(90deg, rgba(14, 165, 233, 0.12) 0%, rgba(20, 184, 166, 0.12) 100%);
+      border: 1px solid rgba(14, 165, 233, 0.35);
+      border-radius: var(--card-radius);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .tab-header-text {
+      font-size: 0.90rem;
+      color: #e2e8f0;
+    }
+    .tab-header-text strong {
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-top">
+      <h1>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+          <line x1="8" y1="6" x2="16" y2="6"></line>
+          <line x1="16" y1="14" x2="16" y2="18"></line>
+          <path d="M16 10h.01"></path>
+          <path d="M12 10h.01"></path>
+          <path d="M8 10h.01"></path>
+          <path d="M12 14h.01"></path>
+          <path d="M8 14h.01"></path>
+          <path d="M12 18h.01"></path>
+          <path d="M8 18h.01"></path>
+        </svg>
+        NMOSD Pulsed Steroid Responsiveness Bedside Calculator
+      </h1>
+      <span class="subtitle">Linkou Chang Gung Memorial Hospital • Neuromyelitis Optica Spectrum Disorder Cohort</span>
+    </div>
+    <div class="badge-bar">
+      <span class="badge badge-cyan">Unified Comparative Suite</span>
+      <span class="badge badge-cyan">Frontline 6-Feature Model (Cutoff 165.9 Pts / 82.8% NPV)</span>
+      <span class="badge badge-teal">Engineered 7-Feature Model (Cutoff 98.7 Pts / 80.4% NPV)</span>
+      <span class="badge">IRB No. 202401828B0</span>
+    </div>
+  </header>
+
+  <!-- TAB NAVIGATION -->
+  <div class="tab-nav">
+    <button class="tab-btn active" id="tabBtn6" onclick="switchMainTab('6feature')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline points="2 17 12 22 22 17"></polyline>
+        <polyline points="2 12 12 17 22 12"></polyline>
+      </svg>
+      1. Standard 6-Feature Bedside Nomogram (Version A: Frontline Standard)
+    </button>
+    <button class="tab-btn" id="tabBtn7" onclick="switchMainTab('7feature')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
+      2. Partial Engineered 7-Feature Nomogram (Version B: AZA &times; MCV &amp; 3-Tier EDSS)
+    </button>
+  </div>
+
+  <!-- TAB PANE 1: 6-FEATURE -->
+  <div class="tab-pane active" id="pane6feature">
+    <div class="tab-header-banner">
+      <div class="tab-header-text">
+        <strong>Model A Architecture:</strong> Primary 6-Feature Bedside Instrument &bull; Optimal Cutoff: <strong>165.9 Points</strong> &bull; <strong>82.8% Negative Predictive Value (NPV)</strong> &bull; AUROC 0.698 (Full ML 0.752).
+      </div>
+      <div>
+        <a href="nmosd_nomogram_calculator_6feature.html" class="switch-link secondary" style="font-size: 0.78rem;">Open Standalone Page &rarr;</a>
+      </div>
+    </div>
+
+      <!-- PRESETS BAR -->
+      <div class="presets-container">
+        <span class="preset-label">Quick Clinical Presets:</span>
+        <button class="btn-preset" onclick="m6_loadPreset('high_risk')">🚨 High-Risk Failure Attack</button>
+        <button class="btn-preset" onclick="m6_loadPreset('typical_nonresp')">⚠️ Typical Non-Responder</button>
+        <button class="btn-preset" onclick="m6_loadPreset('responder')">✅ Favorable Responder</button>
+        <button class="btn-preset" onclick="m6_loadPreset('severe_motor')">⚡ Severe Motor Attack</button>
+        <button class="btn-preset" onclick="m6_resetDefaults()">↺ Reset to Median</button>
+      </div>
+
+      <!-- MAIN COMPUTATION GRID -->
+      <div class="main-grid">
+
+        <!-- LEFT: INPUTS -->
+        <div class="calc-card">
+          <div class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            Day-0 Admission Clinical & Laboratory Predictors (6-Feature Standard)
+          </div>
+
+          <!-- MCV -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Mean Corpuscular Volume (MCV)</label>
+              <span class="input-hint">Reference: 80–100 fL (Top ML Determinant)</span>
+              <span class="input-value-badge" id="m6_badgeMcv">88.0 fL</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m6_sliderMcv" min="65" max="115" step="0.5" value="88.0" oninput="m6_syncMcv(this.value)">
+              <input type="number" class="number-control" id="m6_numMcv" min="65" max="115" step="0.1" value="88.0" oninput="m6_syncMcv(this.value)">
+            </div>
+          </div>
+
+          <!-- Admission EDSS -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Admission EDSS (Baseline Severity)</label>
+              <span class="input-hint">Range: 0.0–9.5 (Mild &le;2.5 has floor effect)</span>
+              <span class="input-value-badge" id="m6_badgeEdss">4.0</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m6_sliderEdss" min="0" max="9.5" step="0.5" value="4.0" oninput="m6_syncEdss(this.value)">
+              <input type="number" class="number-control" id="m6_numEdss" min="0" max="9.5" step="0.5" value="4.0" oninput="m6_syncEdss(this.value)">
+            </div>
+          </div>
+
+          <!-- Platelets -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Platelet Count (PLT)</label>
+              <span class="input-hint">Reference: 150–400 &times;10&sup3;/&micro;L (Consumptive microthrombosis)</span>
+              <span class="input-value-badge" id="m6_badgePlt">220 &times;10&sup3;</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m6_sliderPlt" min="50" max="550" step="5" value="220" oninput="m6_syncPlt(this.value)">
+              <input type="number" class="number-control" id="m6_numPlt" min="50" max="550" step="1" value="220" oninput="m6_syncPlt(this.value)">
+            </div>
+          </div>
+
+          <!-- RDW -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Red Cell Distribution Width (RDW)</label>
+              <span class="input-hint">Reference: 11.5–14.5 % (IL-6 hepcidin anisocytosis)</span>
+              <span class="input-value-badge" id="m6_badgeRdw">13.5 %</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m6_sliderRdw" min="11.0" max="26.0" step="0.1" value="13.5" oninput="m6_syncRdw(this.value)">
+              <input type="number" class="number-control" id="m6_numRdw" min="11.0" max="26.0" step="0.1" value="13.5" oninput="m6_syncRdw(this.value)">
+            </div>
+          </div>
+
+          <!-- Serum Creatinine -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Serum Creatinine</label>
+              <span class="input-hint">mg/dL (Impaired Factor D clearance)</span>
+              <span class="input-value-badge" id="m6_badgeCr">0.70 mg/dL</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m6_sliderCr" min="0.2" max="2.8" step="0.05" value="0.70" oninput="m6_syncCr(this.value)">
+              <input type="number" class="number-control" id="m6_numCr" min="0.2" max="2.8" step="0.01" value="0.70" oninput="m6_syncCr(this.value)">
+            </div>
+          </div>
+
+          <!-- Motor Weakness Phenotype -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Severe Motor Weakness Attack Phenotype</label>
+              <span class="input-hint">Corticospinal tract transection confers 18-fold failure risk</span>
+            </div>
+            <div class="toggle-group">
+              <button type="button" class="toggle-opt active-no" id="m6_btnMotorNo" onclick="m6_setMotor(false)">NO (Sensory / Visual Only)</button>
+              <button type="button" class="toggle-opt" id="m6_btnMotorYes" onclick="m6_setMotor(true)">YES (Motor Deficit Present)</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: RESULTS & CLINICAL DECISION SUPPORT -->
+        <div class="calc-card">
+          <div class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Point-of-Care Bedside Risk Stratification (Version A)
+          </div>
+
+          <!-- SCORE HERO -->
+          <div class="score-hero">
+            <div class="score-lbl">Total Nomogram Points</div>
+            <div class="score-val" id="m6_resTotalPoints">172.4</div>
+            <div class="prob-display">
+              <span>Predicted Response Probability:</span>
+              <span class="prob-val" id="m6_resProb">34.6%</span>
+            </div>
+          </div>
+
+          <!-- DECISION ALERT -->
+          <div class="alert-box" id="m6_resAlertBox">
+            <div class="alert-header" id="m6_resAlertHeader">Analyzing Risk...</div>
+            <div class="alert-body" id="m6_resAlertBody">Computing parameters...</div>
+          </div>
+
+          <!-- POINT BREAKDOWN TABLE -->
+          <div class="card-title" style="font-size: 0.92rem; margin-top: 10px; margin-bottom: 10px;">
+            Nomogram Points Breakdown
+          </div>
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th>Predictor</th>
+                <th>Value</th>
+                <th style="text-align: right;">Points</th>
+              </tr>
+            </thead>
+            <tbody id="m6_resBreakdownBody">
+              <!-- Dynamically Populated -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- INTERACTIVE SVG NOMOGRAM RULER -->
+      <div class="svg-nomogram-container">
+        <div class="card-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+          Interactive Nomogram Vector Ruler (Fig-02 Version A)
+        </div>
+        <div class="svg-wrapper">
+          <svg id="m6_svgNomogram" class="nomogram-svg" viewBox="0 0 920 440"></svg>
+        </div>
+      </div>
+
+      <!-- EMR PROGRESS NOTE GENERATOR -->
+      <div class="emr-container">
+        <div class="card-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          Automated EMR Progress Note (1-Click Clinical Copy)
+        </div>
+        <textarea id="m6_txtEmrNote" class="emr-textarea" readonly></textarea>
+        <div class="emr-actions">
+          <button class="btn-action" onclick="m6_copyEmrNote()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="m6_copyBtnText">Copy EMR Note to Clipboard</span>
+          </button>
+        </div>
+      </div>
+    
+  </div>
+
+  <!-- TAB PANE 2: 7-FEATURE -->
+  <div class="tab-pane" id="pane7feature">
+    <div class="tab-header-banner">
+      <div class="tab-header-text">
+        <strong>Model B Architecture:</strong> 7-Feature Partial Engineered Instrument (Fig-02 Version B) &bull; Optimal Cutoff: <strong>98.7 Points</strong> &bull; <strong>80.4% Negative Predictive Value (NPV)</strong> &bull; AUROC <strong>0.727 (95% CI: 0.668–0.787)</strong>.
+      </div>
+      <div>
+        <a href="nmosd_nomogram_calculator_7feature.html" class="switch-link secondary" style="font-size: 0.78rem;">Open Standalone Page &rarr;</a>
+      </div>
+    </div>
+
+      <!-- PRESETS BAR -->
+      <div class="presets-container">
+        <span class="preset-label">Quick Clinical Presets:</span>
+        <button class="btn-preset" onclick="m7_loadPreset('high_risk')">🚨 High-Risk Failure Attack (AZA+, Macrocytic)</button>
+        <button class="btn-preset" onclick="m7_loadPreset('typical_nonresp')">⚠️ Typical Non-Responder</button>
+        <button class="btn-preset" onclick="m7_loadPreset('responder')">✅ Favorable Responder (AZA−, Normocytic)</button>
+        <button class="btn-preset" onclick="m7_loadPreset('borderline')">⚖️ Borderline Cutoff Case</button>
+        <button class="btn-preset" onclick="m7_resetDefaults()">↺ Reset to Median</button>
+      </div>
+
+      <!-- MAIN COMPUTATION GRID -->
+      <div class="main-grid">
+
+        <!-- LEFT: INPUTS -->
+        <div class="calc-card">
+          <div class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            Day-0 Admission Clinical Predictors (7-Feature Engineered Model)
+          </div>
+
+          <!-- AZA EXPOSURE TOGGLE -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Prior Azathioprine (AZA) Maintenance Exposure</label>
+              <span class="input-hint">Selects purine starvation macrocytic phenotype</span>
+            </div>
+            <div class="toggle-group">
+              <button type="button" class="toggle-opt active-no" id="m7_btnAzaNo" onclick="m7_setAza(false)">NO [AZA−] (Naive / Other)</button>
+              <button type="button" class="toggle-opt" id="m7_btnAzaYes" onclick="m7_setAza(true)">YES [AZA+] (Active Maintenance)</button>
+            </div>
+          </div>
+
+          <!-- MCV -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Mean Corpuscular Volume (MCV)</label>
+              <span class="input-hint" id="m7_hintMcv">Branch: AZA(−) [50–110 fL]</span>
+              <span class="input-value-badge" id="m7_badgeMcv">88.0 fL</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m7_sliderMcv" min="50" max="110" step="0.5" value="88.0" oninput="m7_syncMcv(this.value)">
+              <input type="number" class="number-control" id="m7_numMcv" min="50" max="110" step="0.1" value="88.0" oninput="m7_syncMcv(this.value)">
+            </div>
+          </div>
+
+          <!-- ADMISSION EDSS (3-TIER BINNING) -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Admission EDSS (Severity Stratification)</label>
+              <span class="input-hint">Non-linear floor effect in mild attack (&le;2.5)</span>
+              <span class="input-value-badge" id="m7_badgeEdss">4.0 (Middle)</span>
+            </div>
+            <div class="slider-row" style="margin-bottom: 8px;">
+              <input type="range" class="slider-control" id="m7_sliderEdss" min="0" max="10" step="0.5" value="4.0" oninput="m7_syncEdssSlider(this.value)">
+              <input type="number" class="number-control" id="m7_numEdss" min="0" max="10" step="0.5" value="4.0" oninput="m7_syncEdssSlider(this.value)">
+            </div>
+            <!-- Segmented Buttons for 3 Tiers -->
+            <div class="toggle-group tri">
+              <button type="button" class="toggle-opt" id="m7_btnEdssLow" onclick="m7_setEdssTier('low')">Low (0–2.5)</button>
+              <button type="button" class="toggle-opt active-tier" id="m7_btnEdssMid" onclick="m7_setEdssTier('mid')">Middle (3–5.5)</button>
+              <button type="button" class="toggle-opt" id="m7_btnEdssHigh" onclick="m7_setEdssTier('high')">High (&ge;6.0)</button>
+            </div>
+          </div>
+
+          <!-- PLATELETS -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Platelet Count (PLT)</label>
+              <span class="input-hint">0–600 &times;10&sup3;/&micro;L (Consumptive microthrombosis)</span>
+              <span class="input-value-badge" id="m7_badgePlt">250 &times;10&sup3;</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m7_sliderPlt" min="0" max="600" step="5" value="250" oninput="m7_syncPlt(this.value)">
+              <input type="number" class="number-control" id="m7_numPlt" min="0" max="600" step="1" value="250" oninput="m7_syncPlt(this.value)">
+            </div>
+          </div>
+
+          <!-- RDW -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Red Cell Distribution Width (RDW)</label>
+              <span class="input-hint">10–30 % (Hepcidin-mediated anisocytosis)</span>
+              <span class="input-value-badge" id="m7_badgeRdw">13.5 %</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m7_sliderRdw" min="10" max="30" step="0.1" value="13.5" oninput="m7_syncRdw(this.value)">
+              <input type="number" class="number-control" id="m7_numRdw" min="10" max="30" step="0.1" value="13.5" oninput="m7_syncRdw(this.value)">
+            </div>
+          </div>
+
+          <!-- SERUM CREATININE -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Serum Creatinine</label>
+              <span class="input-hint">0.0–2.5 mg/dL (Factor D clearance & GC resistance)</span>
+              <span class="input-value-badge" id="m7_badgeCr">0.80 mg/dL</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="slider-control" id="m7_sliderCr" min="0.0" max="2.5" step="0.05" value="0.80" oninput="m7_syncCr(this.value)">
+              <input type="number" class="number-control" id="m7_numCr" min="0.0" max="2.5" step="0.01" value="0.80" oninput="m7_syncCr(this.value)">
+            </div>
+          </div>
+
+          <!-- MOTOR WEAKNESS -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">Motor Weakness Phenotype</label>
+              <span class="input-hint">Necrotic corticospinal myelitis transection</span>
+            </div>
+            <div class="toggle-group">
+              <button type="button" class="toggle-opt active-no" id="m7_btnMotorNo" onclick="m7_setMotor(false)">NO (Sensory / Visual Only)</button>
+              <button type="button" class="toggle-opt" id="m7_btnMotorYes" onclick="m7_setMotor(true)">YES (Motor Deficit Present)</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: RESULTS & CLINICAL DECISION SUPPORT -->
+        <div class="calc-card">
+          <div class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Point-of-Care Bedside Risk Stratification (Version B)
+          </div>
+
+          <!-- SCORE HERO -->
+          <div class="score-hero">
+            <div class="score-lbl">Total Nomogram Points</div>
+            <div class="score-val" id="m7_resTotalPoints">106.0</div>
+            <div class="prob-display">
+              <span>Predicted Response Probability:</span>
+              <span class="prob-val" id="m7_resProb">53.6%</span>
+            </div>
+          </div>
+
+          <!-- DECISION ALERT -->
+          <div class="alert-box" id="m7_resAlertBox">
+            <div class="alert-header" id="m7_resAlertHeader">Analyzing Risk...</div>
+            <div class="alert-body" id="m7_resAlertBody">Computing parameters...</div>
+          </div>
+
+          <!-- POINT BREAKDOWN TABLE -->
+          <div class="card-title" style="font-size: 0.92rem; margin-top: 10px; margin-bottom: 10px;">
+            Nomogram Points Breakdown
+          </div>
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th>Predictor</th>
+                <th>Value</th>
+                <th style="text-align: right;">Points</th>
+              </tr>
+            </thead>
+            <tbody id="m7_resBreakdownBody">
+              <!-- Dynamically Populated -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- INTERACTIVE SVG NOMOGRAM RULER -->
+      <div class="svg-nomogram-container">
+        <div class="card-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+          Interactive Nomogram Vector Ruler (Fig-02 Version B: 7-Feature Engineered)
+        </div>
+        <div class="svg-wrapper">
+          <svg id="m7_svgNomogram" class="nomogram-svg" viewBox="0 0 920 540"></svg>
+        </div>
+      </div>
+
+      <!-- EMR PROGRESS NOTE GENERATOR -->
+      <div class="emr-container">
+        <div class="card-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          Automated EMR Progress Note (1-Click Clinical Copy)
+        </div>
+        <textarea id="m7_txtEmrNote" class="emr-textarea" readonly></textarea>
+        <div class="emr-actions">
+          <button class="btn-action" onclick="m7_copyEmrNote()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="m7_copyBtnText">Copy EMR Note to Clipboard</span>
+          </button>
+        </div>
+      </div>
+    
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <strong>Scientific Reference:</strong> Chang CW, Liu TW, Chen CM, Ro LS, Lyu RK, Chang KH*. <em>Predicting Responsiveness to Pulsed Steroids in Anti-AQP4+ NMOSD: A 20-Year Cohort Study & Bedside Nomogram.</em> Linkou Chang Gung Memorial Hospital.
+    </div>
+    <div>
+      IRB No. 202401828B0 • Supported by CGMH & NSTC Grants • Zero External Dependencies • Offline Capable
+    </div>
+  </footer>
+</div>
+
+<script>
+// --- MODEL 6-FEATURE JS ---
+
+    const m6_COEF = {
+      intercept: -4.01524,
+      mcv: -0.04784,
+      edss: 0.05655,
+      plt: 0.003193,
+      rdw: -0.01775,
+      cr: -1.14155,
+      motor: -0.46028,
+      opt_cutoff_pts: 165.9,
+      intercept_pts: 275.9,
+      k_factor: 27.4
+    };
+
+    let m6_state = {
+      mcv: 88.0,
+      edss: 4.0,
+      plt: 220,
+      rdw: 13.5,
+      cr: 0.70,
+      motor: false
+    };
+
+    function m6_init() {
+      m6_syncMcv(m6_state.mcv);
+      m6_syncEdss(m6_state.edss);
+      m6_syncPlt(m6_state.plt);
+      m6_syncRdw(m6_state.rdw);
+      m6_syncCr(m6_state.cr);
+      m6_setMotor(m6_state.motor);
+    }
+
+    function m6_syncMcv(val) {
+      val = parseFloat(val) || 85;
+      m6_state.mcv = Math.min(115, Math.max(65, val));
+      document.getElementById('m6_sliderMcv').value = m6_state.mcv;
+      document.getElementById('m6_numMcv').value = m6_state.mcv.toFixed(1);
+      document.getElementById('m6_badgeMcv').textContent = m6_state.mcv.toFixed(1) + " fL";
+      m6_updateCalculations();
+    }
+
+    function m6_syncEdss(val) {
+      val = parseFloat(val) || 0;
+      m6_state.edss = Math.min(9.5, Math.max(0, val));
+      document.getElementById('m6_sliderEdss').value = m6_state.edss;
+      document.getElementById('m6_numEdss').value = m6_state.edss.toFixed(1);
+      document.getElementById('m6_badgeEdss').textContent = m6_state.edss.toFixed(1);
+      m6_updateCalculations();
+    }
+
+    function m6_syncPlt(val) {
+      val = parseInt(val) || 150;
+      m6_state.plt = Math.min(550, Math.max(50, val));
+      document.getElementById('m6_sliderPlt').value = m6_state.plt;
+      document.getElementById('m6_numPlt').value = m6_state.plt;
+      document.getElementById('m6_badgePlt').textContent = m6_state.plt + " ×10³";
+      m6_updateCalculations();
+    }
+
+    function m6_syncRdw(val) {
+      val = parseFloat(val) || 12;
+      m6_state.rdw = Math.min(26, Math.max(11, val));
+      document.getElementById('m6_sliderRdw').value = m6_state.rdw;
+      document.getElementById('m6_numRdw').value = m6_state.rdw.toFixed(1);
+      document.getElementById('m6_badgeRdw').textContent = m6_state.rdw.toFixed(1) + " %";
+      m6_updateCalculations();
+    }
+
+    function m6_syncCr(val) {
+      val = parseFloat(val) || 0.5;
+      m6_state.cr = Math.min(2.8, Math.max(0.2, val));
+      document.getElementById('m6_sliderCr').value = m6_state.cr;
+      document.getElementById('m6_numCr').value = m6_state.cr.toFixed(2);
+      document.getElementById('m6_badgeCr').textContent = m6_state.cr.toFixed(2) + " mg/dL";
+      m6_updateCalculations();
+    }
+
+    function m6_setMotor(isWeakness) {
+      m6_state.motor = isWeakness;
+      const btnNo = document.getElementById('m6_btnMotorNo');
+      const btnYes = document.getElementById('m6_btnMotorYes');
+      if (isWeakness) {
+        btnYes.className = 'toggle-opt active-yes';
+        btnNo.className = 'toggle-opt';
+      } else {
+        btnNo.className = 'toggle-opt active-no';
+        btnYes.className = 'toggle-opt';
+      }
+      m6_updateCalculations();
+    }
+
+    function m6_loadPreset(preset) {
+      if (preset === 'high_risk') {
+        m6_state = { mcv: 98.0, edss: 2.0, plt: 180, rdw: 15.5, cr: 1.30, motor: true };
+      } else if (preset === 'typical_nonresp') {
+        m6_state = { mcv: 92.0, edss: 3.5, plt: 210, rdw: 14.2, cr: 0.95, motor: true };
+      } else if (preset === 'responder') {
+        m6_state = { mcv: 82.0, edss: 5.5, plt: 320, rdw: 12.8, cr: 0.60, motor: false };
+      } else if (preset === 'severe_motor') {
+        m6_state = { mcv: 89.0, edss: 7.0, plt: 200, rdw: 14.8, cr: 1.10, motor: true };
+      }
+      m6_syncMcv(m6_state.mcv);
+      m6_syncEdss(m6_state.edss);
+      m6_syncPlt(m6_state.plt);
+      m6_syncRdw(m6_state.rdw);
+      m6_syncCr(m6_state.cr);
+      m6_setMotor(m6_state.motor);
+    }
+
+    function m6_resetDefaults() {
+      m6_loadPreset('responder');
+    }
+
+    function m6_updateCalculations() {
+      const motorVal = m6_state.motor ? 1 : 0;
+      const lp = m6_COEF.intercept +
+                 m6_COEF.mcv * m6_state.mcv +
+                 m6_COEF.edss * m6_state.edss +
+                 m6_COEF.plt * m6_state.plt +
+                 m6_COEF.rdw * m6_state.rdw +
+                 m6_COEF.cr * m6_state.cr +
+                 m6_COEF.motor * motorVal;
+
+      const prob = 1 / (1 + Math.exp(-lp));
+      const totalPoints = m6_COEF.intercept_pts + m6_COEF.k_factor * lp;
+
+      let mcvPts = Math.max(0, (105 - m6_state.mcv) * 1.7462038);
+      let edssPts = Math.max(0, m6_state.edss * 2.064001);
+      let pltPts = Math.max(0, m6_state.plt * 0.11653934);
+      let rdwPts = Math.max(0, (26 - m6_state.rdw) * 0.6479305);
+      let crPts = Math.max(0, (2.6 - m6_state.cr) * 41.666667);
+      let motorPts = m6_state.motor ? 0.0 : 16.8;
+
+      const breakdown = [
+        { name: "Mean Corpuscular Volume (MCV)", val: m6_state.mcv.toFixed(1) + " fL", pts: mcvPts },
+        { name: "Admission EDSS", val: m6_state.edss.toFixed(1), pts: edssPts },
+        { name: "Platelet Count (PLT)", val: m6_state.plt + " ×10³/µL", pts: pltPts },
+        { name: "Red Cell Distribution Width (RDW)", val: m6_state.rdw.toFixed(1) + " %", pts: rdwPts },
+        { name: "Serum Creatinine", val: m6_state.cr.toFixed(2) + " mg/dL", pts: crPts },
+        { name: "Severe Motor Weakness Attack", val: m6_state.motor ? "Present (Yes)" : "Absent (No)", pts: motorPts }
+      ];
+
+      m6_renderResults(totalPoints, prob, breakdown);
+      m6_renderSvgNomogram(m6_state.mcv, m6_state.edss, m6_state.plt, m6_state.rdw, m6_state.cr, m6_state.motor, totalPoints, prob);
+      m6_generateEmrProgressNote(totalPoints, prob);
+    }
+
+    function m6_renderResults(totalPts, prob, breakdown) {
+      document.getElementById('m6_resTotalPoints').textContent = totalPts.toFixed(1);
+      document.getElementById('m6_resProb').textContent = (prob * 100).toFixed(1) + '%';
+
+      const isHighRisk = totalPts < m6_COEF.opt_cutoff_pts;
+      const alertBox = document.getElementById('m6_resAlertBox');
+      const alertHeader = document.getElementById('m6_resAlertHeader');
+      const alertBody = document.getElementById('m6_resAlertBody');
+
+      if (isHighRisk) {
+        alertBox.className = 'alert-box alert-danger';
+        alertHeader.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          HIGH RISK FOR STEROID FAILURE (82.8% Negative Predictive Value)
+        `;
+        alertBody.innerHTML = `
+          <strong>Total Score &lt; 165.9 Points</strong> (Predicted Response: ${(prob*100).toFixed(1)}%).<br>
+          <strong>Clinical Directive:</strong> This patient has an <strong>82.8% probability of failing pulsed steroids</strong>.<br>
+          <strong>DO NOT WAIT 7–14 DAYS!</strong> Initiate frontline IVMP (1g/d &times; 3–5d), arrange central venous access preemptively, and mobilize rescue apheresis (Plasma Exchange [PLEX] or Immunoadsorption [IA]) within the golden <strong>&le; 48–72 hour window</strong> to prevent permanent axonal injury.
+        `;
+      } else {
+        alertBox.className = 'alert-box alert-success';
+        alertHeader.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          FAVORABLE STEROID RESPONDER (Score &ge; 165.9 Points)
+        `;
+        alertBody.innerHTML = `
+          <strong>Total Score &ge; 165.9 Points</strong> (Predicted Response: ${(prob*100).toFixed(1)}%).<br>
+          <strong>Clinical Directive:</strong> Standard frontline high-dose IVMP monotherapy (1,000 mg/d &times; 3–5 days) is recommended. Observe closely for secondary deterioration; reserve rescue apheresis only if functional worsening occurs.
+        `;
+      }
+
+      const tbody = document.getElementById('m6_resBreakdownBody');
+      tbody.innerHTML = '';
+      breakdown.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.name}</strong></td>
+          <td>${item.val}</td>
+          <td class="pts">+${item.pts.toFixed(1)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function m6_renderSvgNomogram(mcv, edss, plt, rdw, cr, motor, totalPoints, prob) {
+      const svg = document.getElementById('m6_svgNomogram');
+      if (!svg) return;
+      const xLeft = 140;
+      const xRight = 860;
+      const w = xRight - xLeft;
+
+      let svgHtml = `
+        <rect width="100%" height="100%" fill="#1e293b" rx="8"/>
+        <defs>
+          <filter id="m6_glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+      `;
+
+      function drawAxis(y, title, minVal, maxVal, curVal, unit, isReverse=false) {
+        svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="end">${title}</text>`;
+        svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRight}" y2="${y}" stroke="#475569" stroke-width="2"/>`;
+
+        const steps = 5;
+        for (let i = 0; i <= steps; i++) {
+          const frac = i / steps;
+          const tickVal = isReverse ? maxVal - frac * (maxVal - minVal) : minVal + frac * (maxVal - minVal);
+          const tx = xLeft + frac * w;
+          svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 5}" stroke="#64748b" stroke-width="1.5"/>`;
+          svgHtml += `<text x="${tx}" y="${y + 16}" fill="#64748b" font-size="9" text-anchor="middle">${tickVal.toFixed(unit ? 1 : 0)}</text>`;
+        }
+
+        let curFrac = (curVal - minVal) / (maxVal - minVal);
+        curFrac = Math.max(0, Math.min(1, curFrac));
+        if (isReverse) curFrac = 1 - curFrac;
+        const markerX = xLeft + curFrac * w;
+
+        svgHtml += `<circle cx="${markerX}" cy="${y}" r="6" fill="#38bdf8" filter="url(#m6_glow)"/>`;
+        svgHtml += `<line x1="${markerX}" y1="${y - 8}" x2="${markerX}" y2="${y + 8}" stroke="#ffffff" stroke-width="2"/>`;
+      }
+
+      let y = 30;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#38bdf8" font-size="12" font-weight="700" text-anchor="end">Points Scale</text>`;
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRight}" y2="${y}" stroke="#38bdf8" stroke-width="2.5"/>`;
+      for (let i = 0; i <= 10; i++) {
+        const tx = xLeft + (i / 10) * w;
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 6}" stroke="#38bdf8" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 18}" fill="#94a3b8" font-size="10" text-anchor="middle">${i * 10}</text>`;
+      }
+
+      y += 45; drawAxis(y, "1. MCV (fL)", 65, 105, mcv, true, true);
+      y += 45; drawAxis(y, "2. Admission EDSS", 0, 9.5, edss, true, false);
+      y += 45; drawAxis(y, "3. Platelets (×10³)", 50, 550, plt, false, false);
+      y += 45; drawAxis(y, "4. RDW (%)", 11, 26, rdw, true, true);
+      y += 45; drawAxis(y, "5. Creatinine (mg/dL)", 0.2, 2.6, cr, true, true);
+
+      y += 45;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="end">6. Motor Weakness</text>`;
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRight}" y2="${y}" stroke="#475569" stroke-width="2"/>`;
+      const xNo = xLeft + (16.8 / 100) * w;
+      const xYes = xLeft;
+      svgHtml += `<circle cx="${xYes}" cy="${y}" r="4" fill="#64748b"/>`;
+      svgHtml += `<text x="${xYes}" y="${y + 16}" fill="#64748b" font-size="9" text-anchor="middle">Yes (0 pts)</text>`;
+      svgHtml += `<circle cx="${xNo}" cy="${y}" r="4" fill="#64748b"/>`;
+      svgHtml += `<text x="${xNo}" y="${y + 16}" fill="#64748b" font-size="9" text-anchor="middle">No (+16.8 pts)</text>`;
+      const curMotorX = motor ? xYes : xNo;
+      svgHtml += `<circle cx="${curMotorX}" cy="${y}" r="6" fill="#38bdf8" filter="url(#m6_glow)"/>`;
+
+      y += 55;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#10b981" font-size="12" font-weight="700" text-anchor="end">Total Points</text>`;
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRight}" y2="${y}" stroke="#10b981" stroke-width="2.5"/>`;
+      for (let pt = 0; pt <= 260; pt += 26) {
+        const tx = xLeft + (pt / 260) * w;
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 6}" stroke="#10b981" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 18}" fill="#94a3b8" font-size="9" text-anchor="middle">${pt}</text>`;
+      }
+
+      const cutX = xLeft + (m6_COEF.opt_cutoff_pts / 260) * w;
+      svgHtml += `<line x1="${cutX}" y1="${y - 12}" x2="${cutX}" y2="${y + 28}" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3"/>`;
+      svgHtml += `<text x="${cutX}" y="${y - 16}" fill="#ef4444" font-size="9.5" font-weight="700" text-anchor="middle">Cutoff 165.9 Pts</text>`;
+
+      let curTotFrac = Math.max(0, Math.min(1, totalPoints / 260));
+      const curTotX = xLeft + curTotFrac * w;
+      svgHtml += `<polygon points="${curTotX-6},${y-12} ${curTotX+6},${y-12} ${curTotX},${y}" fill="#38bdf8"/>`;
+      svgHtml += `<circle cx="${curTotX}" cy="${y}" r="5" fill="#38bdf8"/>`;
+
+      y += 50;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#c084fc" font-size="12" font-weight="700" text-anchor="end">Predicted Response</text>`;
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRight}" y2="${y}" stroke="#a855f7" stroke-width="2.5"/>`;
+      const probTicks = [0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.85, 0.95];
+      probTicks.forEach(pt => {
+        const ptLp = Math.log(pt / (1 - pt));
+        const ptPts = m6_COEF.intercept_pts + m6_COEF.k_factor * ptLp;
+        const frac = Math.max(0, Math.min(1, ptPts / 260));
+        const tx = xLeft + frac * w;
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 6}" stroke="#a855f7" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 18}" fill="#c084fc" font-size="9" text-anchor="middle">${(pt * 100).toFixed(0)}%</text>`;
+      });
+
+      svg.innerHTML = svgHtml;
+    }
+
+    function m6_generateEmrProgressNote(totalPoints, prob) {
+      const isHighRisk = totalPoints < m6_COEF.opt_cutoff_pts;
+      const now = new Date();
+      const dateStr = now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, '0') + "-" +
+        String(now.getDate()).padStart(2, '0') + " " +
+        String(now.getHours()).padStart(2, '0') + ":" +
+        String(now.getMinutes()).padStart(2, '0');
+
+      let note = `====================================================================
+NMOSD ACUTE ATTACK DAY-0 BEDSIDE STEROID RESPONSIVENESS EVALUATION
+Tool: 6-Feature Bedside Nomogram (Chang CW et al., Linkou CGMH)
+Evaluation Timestamp: ${dateStr}
+====================================================================
+DAY-0 PRE-TREATMENT PARAMETERS:
+- Mean Corpuscular Volume (MCV): ${ m6_state.mcv.toFixed(1) } fL
+- Admission Baseline EDSS: ${ m6_state.edss.toFixed(1) }
+- Platelet Count (PLT): ${ m6_state.plt } x10^3/uL
+- Red Cell Distribution Width (RDW): ${ m6_state.rdw.toFixed(1) } %
+- Serum Creatinine: ${ m6_state.cr.toFixed(2) } mg/dL
+- Severe Motor Weakness Phenotype: ${ m6_state.motor ? 'PRESENT (High Risk)' : 'Absent' }
+
+PREDICTED SCORING & PROBABILITIES:
+- Total Nomogram Score: ${totalPoints.toFixed(1)} Points (Cutoff: 165.9 Points)
+- Predicted Steroid Responsiveness: ${(prob * 100).toFixed(1)}%
+- Risk Classification: ${isHighRisk ? '🚨 HIGH FAILURE RISK (NPV 82.8%)' : '✅ FAVORABLE RESPONDER'}
+
+CLINICAL RECOMMENDATION & TREATMENT DIRECTIVE:
+${isHighRisk ?
+`- HIGH RISK OF PULSED STEROID REFRACTORINESS: 82.8% probability of failure.
+- DO NOT WAIT 7–14 DAYS TO ASSESS RESPONSE.
+- Action: Initiate frontline IVMP (1g/d x 3–5d) + immediately establish central venous access.
+- Prepare rescue apheresis triage (Plasma Exchange [PLEX] or Immunoadsorption [IA]) within <= 48–72 hours.` :
+`- FAVORABLE STEROID RESPONSIVENESS: Proceed with frontline high-dose IVMP monotherapy (1,000 mg/d x 3–5d).
+- Observe closely for secondary deterioration; reserve rescue apheresis only if functional worsening occurs.`}
+====================================================================`;
+
+      const emrElem = document.getElementById('m6_txtEmrNote');
+      if (emrElem) emrElem.value = note;
+    }
+
+    function m6_copyEmrNote() {
+      const note = document.getElementById('m6_txtEmrNote').value;
+      navigator.clipboard.writeText(note).then(() => {
+        const btn = document.getElementById('m6_copyBtnText');
+        btn.textContent = '✓ Note Copied to Clipboard!';
+        setTimeout(() => { btn.textContent = 'Copy EMR Note to Clipboard'; }, 2500);
+      }).catch(err => {
+        alert('Please manually copy the text in the box above.');
+      });
+    }
+    
+
+// --- MODEL 7-FEATURE JS ---
+
+    const m7_COEF = {
+      opt_cutoff_pts: 98.7,
+      opt_prob_cutoff: 0.373,
+      npv: 80.4,
+      sensitivity: 61.8,
+      specificity: 76.1,
+      auroc: "0.727 (95% CI: 0.668–0.787)",
+      lp_zero_pts: 104.42,
+      lp_scale: 11.003
+    };
+
+    let m7_state = {
+      aza: false,
+      mcv: 84.0,
+      edssVal: 4.0,
+      edssTier: 'mid',
+      plt: 250,
+      rdw: 13.5,
+      cr: 0.80,
+      motor: false
+    };
+
+    function m7_init() {
+      m7_setAza(m7_state.aza);
+      m7_syncMcv(m7_state.mcv);
+      m7_syncEdssSlider(m7_state.edssVal);
+      m7_syncPlt(m7_state.plt);
+      m7_syncRdw(m7_state.rdw);
+      m7_syncCr(m7_state.cr);
+      m7_setMotor(m7_state.motor);
+    }
+
+    function m7_setAza(isAza) {
+      m7_state.aza = isAza;
+      const btnNo = document.getElementById('m7_btnAzaNo');
+      const btnYes = document.getElementById('m7_btnAzaYes');
+      const hint = document.getElementById('m7_hintMcv');
+      if (isAza) {
+        btnYes.className = 'toggle-opt active-yes';
+        btnNo.className = 'toggle-opt';
+        hint.textContent = 'Branch: AZA(+) [Active Pharmacodynamic Purine Starvation]';
+      } else {
+        btnNo.className = 'toggle-opt active-no';
+        btnYes.className = 'toggle-opt';
+        hint.textContent = 'Branch: AZA(−) [Naive / Non-AZA Maintenance]';
+      }
+      m7_updateCalculations();
+    }
+
+    function m7_syncMcv(val) {
+      val = parseFloat(val) || 85;
+      m7_state.mcv = Math.min(110, Math.max(50, val));
+      document.getElementById('m7_sliderMcv').value = m7_state.mcv;
+      document.getElementById('m7_numMcv').value = m7_state.mcv.toFixed(1);
+      document.getElementById('m7_badgeMcv').textContent = m7_state.mcv.toFixed(1) + " fL";
+      m7_updateCalculations();
+    }
+
+    function m7_syncEdssSlider(val) {
+      val = parseFloat(val) || 0;
+      m7_state.edssVal = Math.min(10, Math.max(0, val));
+      document.getElementById('m7_sliderEdss').value = m7_state.edssVal;
+      document.getElementById('m7_numEdss').value = m7_state.edssVal.toFixed(1);
+
+      if (m7_state.edssVal <= 2.5) {
+        m7_state.edssTier = 'low';
+      } else if (m7_state.edssVal <= 5.5) {
+        m7_state.edssTier = 'mid';
+      } else {
+        m7_state.edssTier = 'high';
+      }
+      m7_updateEdssTierUI();
+      m7_updateCalculations();
+    }
+
+    function m7_setEdssTier(tier) {
+      m7_state.edssTier = tier;
+      if (tier === 'low') {
+        m7_state.edssVal = 1.5;
+      } else if (tier === 'mid') {
+        m7_state.edssVal = 4.0;
+      } else if (tier === 'high') {
+        m7_state.edssVal = 7.0;
+      }
+      document.getElementById('m7_sliderEdss').value = m7_state.edssVal;
+      document.getElementById('m7_numEdss').value = m7_state.edssVal.toFixed(1);
+      m7_updateEdssTierUI();
+      m7_updateCalculations();
+    }
+
+    function m7_updateEdssTierUI() {
+      const bLow = document.getElementById('m7_btnEdssLow');
+      const bMid = document.getElementById('m7_btnEdssMid');
+      const bHigh = document.getElementById('m7_btnEdssHigh');
+      bLow.className = m7_state.edssTier === 'low' ? 'toggle-opt active-tier' : 'toggle-opt';
+      bMid.className = m7_state.edssTier === 'mid' ? 'toggle-opt active-tier' : 'toggle-opt';
+      bHigh.className = m7_state.edssTier === 'high' ? 'toggle-opt active-tier' : 'toggle-opt';
+
+      const tierLabels = { low: 'Low (0–2.5)', mid: 'Middle (3–5.5)', high: 'High (≥6.0)' };
+      document.getElementById('m7_badgeEdss').textContent = m7_state.edssVal.toFixed(1) + " (" + tierLabels[m7_state.edssTier] + ")";
+    }
+
+    function m7_syncPlt(val) {
+      val = parseInt(val) || 200;
+      m7_state.plt = Math.min(600, Math.max(0, val));
+      document.getElementById('m7_sliderPlt').value = m7_state.plt;
+      document.getElementById('m7_numPlt').value = m7_state.plt;
+      document.getElementById('m7_badgePlt').textContent = m7_state.plt + " ×10³";
+      m7_updateCalculations();
+    }
+
+    function m7_syncRdw(val) {
+      val = parseFloat(val) || 13;
+      m7_state.rdw = Math.min(30, Math.max(10, val));
+      document.getElementById('m7_sliderRdw').value = m7_state.rdw;
+      document.getElementById('m7_numRdw').value = m7_state.rdw.toFixed(1);
+      document.getElementById('m7_badgeRdw').textContent = m7_state.rdw.toFixed(1) + " %";
+      m7_updateCalculations();
+    }
+
+    function m7_syncCr(val) {
+      val = parseFloat(val) || 0.8;
+      m7_state.cr = Math.min(2.5, Math.max(0.0, val));
+      document.getElementById('m7_sliderCr').value = m7_state.cr;
+      document.getElementById('m7_numCr').value = m7_state.cr.toFixed(2);
+      document.getElementById('m7_badgeCr').textContent = m7_state.cr.toFixed(2) + " mg/dL";
+      m7_updateCalculations();
+    }
+
+    function m7_setMotor(isWeakness) {
+      m7_state.motor = isWeakness;
+      const btnNo = document.getElementById('m7_btnMotorNo');
+      const btnYes = document.getElementById('m7_btnMotorYes');
+      if (isWeakness) {
+        btnYes.className = 'toggle-opt active-yes';
+        btnNo.className = 'toggle-opt';
+      } else {
+        btnNo.className = 'toggle-opt active-no';
+        btnYes.className = 'toggle-opt';
+      }
+      m7_updateCalculations();
+    }
+
+    function m7_loadPreset(preset) {
+      if (preset === 'high_risk') {
+        m7_state = { aza: true, mcv: 102.0, edssVal: 2.0, edssTier: 'low', plt: 210, rdw: 15.2, cr: 1.40, motor: true };
+      } else if (preset === 'typical_nonresp') {
+        m7_state = { aza: true, mcv: 96.0, edssVal: 2.5, edssTier: 'low', plt: 240, rdw: 14.5, cr: 1.10, motor: true };
+      } else if (preset === 'responder') {
+        m7_state = { aza: false, mcv: 84.0, edssVal: 4.0, edssTier: 'mid', plt: 340, rdw: 12.5, cr: 0.70, motor: false };
+      } else if (preset === 'borderline') {
+        m7_state = { aza: false, mcv: 90.0, edssVal: 3.5, edssTier: 'mid', plt: 260, rdw: 13.8, cr: 0.90, motor: false };
+      }
+      m7_setAza(m7_state.aza);
+      m7_syncMcv(m7_state.mcv);
+      m7_syncEdssSlider(m7_state.edssVal);
+      m7_syncPlt(m7_state.plt);
+      m7_syncRdw(m7_state.rdw);
+      m7_syncCr(m7_state.cr);
+      m7_setMotor(m7_state.motor);
+    }
+
+    function m7_resetDefaults() {
+      m7_loadPreset('responder');
+    }
+
+    function m7_updateCalculations() {
+      // Exact vector points math from Fig-02 Version B
+      let mcvPts = 0.0;
+      if (!m7_state.aza) {
+        // AZA(-): 110 fL = 21.56 pts, 50 fL = 55.70 pts -> slope 0.5690
+        mcvPts = 21.56 + (110.0 - m7_state.mcv) * 0.5690;
+      } else {
+        // AZA(+): 110 fL = 0.0 pts, 50 fL = 100.0 pts -> slope 1.66667
+        mcvPts = (110.0 - m7_state.mcv) * 1.66667;
+      }
+      mcvPts = Math.max(0, mcvPts);
+
+      // Platelets: 0 = 0.0 pts, 600 = 15.32 pts -> slope 0.02553
+      let pltPts = Math.max(0, m7_state.plt * 0.02553);
+
+      // RDW: 30% = 0.0 pts, 10% = 9.42 pts -> slope 0.4710
+      let rdwPts = Math.max(0, (30.0 - m7_state.rdw) * 0.4710);
+
+      // Creatinine: 2.5 = 0.0 pts, 0.0 = 45.21 pts -> slope 18.084
+      let crPts = Math.max(0, (2.5 - m7_state.cr) * 18.084);
+
+      // Admission EDSS: Low = 0.0, High = 10.02, Middle = 14.57
+      let edssPts = 0.0;
+      let edssTierName = "Low (0–2.5)";
+      if (m7_state.edssTier === 'low') {
+        edssPts = 0.00;
+        edssTierName = "Low (0–2.5)";
+      } else if (m7_state.edssTier === 'mid') {
+        edssPts = 14.57;
+        edssTierName = "Middle (3–5.5)";
+      } else if (m7_state.edssTier === 'high') {
+        edssPts = 10.02;
+        edssTierName = "High (≥6.0)";
+      }
+
+      // Motor Weakness: Yes = 0.0, No = 5.64
+      let motorPts = m7_state.motor ? 0.0 : 5.64;
+
+      const totalPoints = mcvPts + pltPts + rdwPts + crPts + edssPts + motorPts;
+      const lp = (totalPoints - m7_COEF.lp_zero_pts) / m7_COEF.lp_scale;
+      const prob = 1 / (1 + Math.exp(-lp));
+
+      const breakdown = [
+        { name: `Mean Corpuscular Volume (MCV) [${ m7_state.aza ? 'AZA(+)' : 'AZA(−)' }]`, val: `${ m7_state.mcv.toFixed(1) } fL (${ m7_state.aza ? 'AZA Exposed' : 'Naive' })`, pts: mcvPts },
+        { name: "Platelet Count (PLT)", val: `${ m7_state.plt } ×10³/µL`, pts: pltPts },
+        { name: "Red Cell Distribution Width (RDW)", val: `${ m7_state.rdw.toFixed(1) } %`, pts: rdwPts },
+        { name: "Serum Creatinine", val: `${ m7_state.cr.toFixed(2) } mg/dL`, pts: crPts },
+        { name: "Admission EDSS (Binned)", val: `${ m7_state.edssVal.toFixed(1) } → ${edssTierName}`, pts: edssPts },
+        { name: "Motor Weakness Phenotype", val: m7_state.motor ? "Present (Yes)" : "Absent (No)", pts: motorPts }
+      ];
+
+      m7_renderResults(totalPoints, prob, breakdown);
+      m7_renderSvgNomogram(m7_state.aza, m7_state.mcv, m7_state.plt, m7_state.rdw, m7_state.cr, m7_state.edssTier, m7_state.motor, totalPoints, lp, prob);
+      m7_generateEmrProgressNote(totalPoints, lp, prob);
+    }
+
+    function m7_renderResults(totalPts, prob, breakdown) {
+      document.getElementById('m7_resTotalPoints').textContent = totalPts.toFixed(1);
+      document.getElementById('m7_resProb').textContent = (prob * 100).toFixed(1) + '%';
+
+      const isHighRisk = totalPts < m7_COEF.opt_cutoff_pts;
+      const alertBox = document.getElementById('m7_resAlertBox');
+      const alertHeader = document.getElementById('m7_resAlertHeader');
+      const alertBody = document.getElementById('m7_resAlertBody');
+
+      if (isHighRisk) {
+        alertBox.className = 'alert-box alert-danger';
+        alertHeader.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          HIGH RISK FOR STEROID FAILURE (80.4% Negative Predictive Value)
+        `;
+        alertBody.innerHTML = `
+          <strong>Total Score &lt; 98.7 Points</strong> (Predicted Response: ${(prob*100).toFixed(1)}% &le; 37.3%).<br>
+          <strong>Clinical Directive:</strong> This patient has an <strong>80.4% probability of failing pulsed steroids</strong> (Cutoff 98.7 Pts, Model AUROC 0.727).<br>
+          <strong>DO NOT WAIT 7–14 DAYS!</strong> Initiate frontline IVMP (1g/d &times; 3–5d), arrange central venous access preemptively, and mobilize rescue apheresis (Plasma Exchange [PLEX] or Immunoadsorption [IA]) within the golden <strong>&le; 48–72 hour window</strong> to prevent permanent axonal transection.
+        `;
+      } else {
+        alertBox.className = 'alert-box alert-success';
+        alertHeader.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          FAVORABLE STEROID RESPONDER (Score &ge; 98.7 Points)
+        `;
+        alertBody.innerHTML = `
+          <strong>Total Score &ge; 98.7 Points</strong> (Predicted Response: ${(prob*100).toFixed(1)}% &gt; 37.3%).<br>
+          <strong>Clinical Directive:</strong> Standard frontline high-dose IVMP monotherapy (1,000 mg/d &times; 3–5 days) is recommended. Observe closely for secondary deterioration; reserve rescue apheresis only if functional worsening evolves.
+        `;
+      }
+
+      const tbody = document.getElementById('m7_resBreakdownBody');
+      tbody.innerHTML = '';
+      breakdown.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.name}</strong></td>
+          <td>${item.val}</td>
+          <td class="pts">+${item.pts.toFixed(1)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function m7_renderSvgNomogram(aza, mcv, plt, rdw, cr, edssTier, motor, totalPoints, lp, prob) {
+      const svg = document.getElementById('m7_svgNomogram');
+      if (!svg) return;
+      const xLeft = 160;
+      const xRight = 860;
+      const w = xRight - xLeft; // 700 units for 100 points -> 7.0 units/pt
+
+      let svgHtml = `
+        <rect width="100%" height="100%" fill="#1e293b" rx="8"/>
+        <defs>
+          <filter id="m7_glow7" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+      `;
+
+      // Helper to map points (0-100) to X coordinate
+      function ptToX(pts) {
+        return xLeft + (pts / 100.0) * w;
+      }
+
+      // 0. Points Scale (Top: 0 to 100)
+      let y = 30;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#38bdf8" font-size="12" font-weight="700" text-anchor="end">Points Scale</text>`;
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRight}" y2="${y}" stroke="#38bdf8" stroke-width="2.5"/>`;
+      for (let i = 0; i <= 10; i++) {
+        const tx = xLeft + (i / 10) * w;
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 6}" stroke="#38bdf8" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 18}" fill="#94a3b8" font-size="10" text-anchor="middle">${i * 10}</text>`;
+      }
+
+      // 1. MCV [AZA(-)] (fL): 110 (21.56 pts) to 50 (55.70 pts)
+      y += 42;
+      const azaNegActive = !aza;
+      const colAzaNeg = azaNegActive ? "#38bdf8" : "#475569";
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="${colAzaNeg}" font-size="11" font-weight="${azaNegActive ? '700' : '500'}" text-anchor="end">MCV [AZA(−)] (fL)</text>`;
+      const xAzaNeg110 = ptToX(21.56);
+      const xAzaNeg50 = ptToX(55.70);
+      svgHtml += `<line x1="${xAzaNeg110}" y1="${y}" x2="${xAzaNeg50}" y2="${y}" stroke="${colAzaNeg}" stroke-width="${azaNegActive ? 2.5 : 1.5}"/>`;
+      [110, 100, 90, 80, 70, 60, 50].forEach(val => {
+        const pts = 21.56 + (110 - val) * 0.5690;
+        const tx = ptToX(pts);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 5}" stroke="${colAzaNeg}" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 16}" fill="${colAzaNeg}" font-size="8.5" text-anchor="middle">${val}</text>`;
+      });
+      if (azaNegActive) {
+        const curPts = 21.56 + (110 - mcv) * 0.5690;
+        const markerX = ptToX(curPts);
+        svgHtml += `<circle cx="${markerX}" cy="${y}" r="5.5" fill="#38bdf8" filter="url(#m7_glow7)"/>`;
+      }
+
+      // 2. MCV [AZA(+)] (fL): 110 (0 pts) to 50 (100 pts)
+      y += 42;
+      const azaPosActive = aza;
+      const colAzaPos = azaPosActive ? "#38bdf8" : "#475569";
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="${colAzaPos}" font-size="11" font-weight="${azaPosActive ? '700' : '500'}" text-anchor="end">MCV [AZA(+)] (fL)</text>`;
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRight}" y2="${y}" stroke="${colAzaPos}" stroke-width="${azaPosActive ? 2.5 : 1.5}"/>`;
+      [110, 100, 90, 80, 70, 60, 50].forEach(val => {
+        const pts = (110 - val) * 1.66667;
+        const tx = ptToX(pts);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 5}" stroke="${colAzaPos}" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 16}" fill="${colAzaPos}" font-size="8.5" text-anchor="middle">${val}</text>`;
+      });
+      if (azaPosActive) {
+        const curPts = (110 - mcv) * 1.66667;
+        const markerX = ptToX(curPts);
+        svgHtml += `<circle cx="${markerX}" cy="${y}" r="5.5" fill="#38bdf8" filter="url(#m7_glow7)"/>`;
+      }
+
+      // 3. Platelets (10³/µL): 0 to 600 (0 to 15.32 pts)
+      y += 42;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="end">Platelets (×10³/µL)</text>`;
+      const xPlt600 = ptToX(15.32);
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xPlt600}" y2="${y}" stroke="#475569" stroke-width="2"/>`;
+      [0, 100, 200, 300, 400, 500, 600].forEach(val => {
+        const pts = val * 0.02553;
+        const tx = ptToX(pts);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 5}" stroke="#64748b" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 16}" fill="#64748b" font-size="8.5" text-anchor="middle">${val}</text>`;
+      });
+      const markerPlt = ptToX(plt * 0.02553);
+      svgHtml += `<circle cx="${markerPlt}" cy="${y}" r="5" fill="#38bdf8" filter="url(#m7_glow7)"/>`;
+
+      // 4. RDW (%): 30 to 10 (0 to 9.42 pts)
+      y += 42;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="end">RDW (%)</text>`;
+      const xRdw10 = ptToX(9.42);
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRdw10}" y2="${y}" stroke="#475569" stroke-width="2"/>`;
+      [30, 25, 20, 15, 10].forEach(val => {
+        const pts = (30 - val) * 0.4710;
+        const tx = ptToX(pts);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 5}" stroke="#64748b" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 16}" fill="#64748b" font-size="8.5" text-anchor="middle">${val}</text>`;
+      });
+      const markerRdw = ptToX((30 - rdw) * 0.4710);
+      svgHtml += `<circle cx="${markerRdw}" cy="${y}" r="5" fill="#38bdf8" filter="url(#m7_glow7)"/>`;
+
+      // 5. Creatinine (mg/dL): 2.5 to 0.0 (0 to 45.21 pts)
+      y += 42;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="end">Creatinine (mg/dL)</text>`;
+      const xCr0 = ptToX(45.21);
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xCr0}" y2="${y}" stroke="#475569" stroke-width="2"/>`;
+      [2.5, 2.0, 1.5, 1.0, 0.5, 0.0].forEach(val => {
+        const pts = (2.5 - val) * 18.084;
+        const tx = ptToX(pts);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 5}" stroke="#64748b" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 16}" fill="#64748b" font-size="8.5" text-anchor="middle">${val.toFixed(1)}</text>`;
+      });
+      const markerCr = ptToX((2.5 - cr) * 18.084);
+      svgHtml += `<circle cx="${markerCr}" cy="${y}" r="5" fill="#38bdf8" filter="url(#m7_glow7)"/>`;
+
+      // 6. Admission EDSS: Low (0), High (10.02), Middle (14.57)
+      y += 42;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="end">Admission EDSS</text>`;
+      const xEdssMid = ptToX(14.57);
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xEdssMid}" y2="${y}" stroke="#475569" stroke-width="2"/>`;
+      const edssPointsMap = { low: 0.0, high: 10.02, mid: 14.57 };
+      [
+        { label: "Low (0–2.5)", pts: 0.0 },
+        { label: "High (≥6)", pts: 10.02 },
+        { label: "Middle (3–5.5)", pts: 14.57 }
+      ].forEach(item => {
+        const tx = ptToX(item.pts);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 5}" stroke="#64748b" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 16}" fill="#64748b" font-size="8.5" text-anchor="middle">${item.label}</text>`;
+      });
+      const curEdssPts = edssPointsMap[edssTier] || 0;
+      const markerEdss = ptToX(curEdssPts);
+      svgHtml += `<circle cx="${markerEdss}" cy="${y}" r="5" fill="#38bdf8" filter="url(#m7_glow7)"/>`;
+
+      // 7. Motor Weakness: Yes (0), No (5.64)
+      y += 42;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="end">Motor Weakness</text>`;
+      const xMotorNo = ptToX(5.64);
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xMotorNo}" y2="${y}" stroke="#475569" stroke-width="2"/>`;
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xLeft}" y2="${y + 5}" stroke="#64748b" stroke-width="1.5"/>`;
+      svgHtml += `<text x="${xLeft}" y="${y + 16}" fill="#64748b" font-size="8.5" text-anchor="middle">Yes (0 pts)</text>`;
+      svgHtml += `<line x1="${xMotorNo}" y1="${y}" x2="${xMotorNo}" y2="${y + 5}" stroke="#64748b" stroke-width="1.5"/>`;
+      svgHtml += `<text x="${xMotorNo}" y="${y + 16}" fill="#64748b" font-size="8.5" text-anchor="middle">No (+5.6 pts)</text>`;
+      const curMotorPts = motor ? 0.0 : 5.64;
+      const markerMotor = ptToX(curMotorPts);
+      svgHtml += `<circle cx="${markerMotor}" cy="${y}" r="5" fill="#38bdf8" filter="url(#m7_glow7)"/>`;
+
+      // 8. Total Points Axis: 0 to 150 (maps to xLeft to xRight)
+      y += 54;
+      function totPtToX(tPts) {
+        return xLeft + (tPts / 150.0) * w;
+      }
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#10b981" font-size="12" font-weight="700" text-anchor="end">Total Points</text>`;
+      svgHtml += `<line x1="${xLeft}" y1="${y}" x2="${xRight}" y2="${y}" stroke="#10b981" stroke-width="2.5"/>`;
+      for (let t = 0; t <= 150; t += 25) {
+        const tx = totPtToX(t);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 6}" stroke="#10b981" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 18}" fill="#94a3b8" font-size="9" text-anchor="middle">${t}</text>`;
+      }
+
+      // Cutoff Line on Total Points (98.7 Pts)
+      const cutX = totPtToX(m7_COEF.opt_cutoff_pts);
+      svgHtml += `<line x1="${cutX}" y1="${y - 12}" x2="${cutX}" y2="${y + 70}" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3"/>`;
+      svgHtml += `<text x="${cutX}" y="${y - 16}" fill="#ef4444" font-size="9.5" font-weight="700" text-anchor="middle">Cutoff: 98.7 Pts (80.4% NPV)</text>`;
+
+      const curTotX = totPtToX(Math.min(150, Math.max(0, totalPoints)));
+      svgHtml += `<polygon points="${curTotX-6},${y-12} ${curTotX+6},${y-12} ${curTotX},${y}" fill="#38bdf8"/>`;
+      svgHtml += `<circle cx="${curTotX}" cy="${y}" r="5" fill="#38bdf8"/>`;
+
+      // 9. Linear Predictor Axis: -6 to +4
+      y += 45;
+      function lpToX(vLp) {
+        // LP -6 is at totPts = 38.40; LP +4 is at totPts = 148.43
+        const tPts = m7_COEF.lp_zero_pts + vLp * m7_COEF.lp_scale;
+        return totPtToX(tPts);
+      }
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="end">Linear Predictor</text>`;
+      const xLpMin = lpToX(-6);
+      const xLpMax = lpToX(4);
+      svgHtml += `<line x1="${xLpMin}" y1="${y}" x2="${xLpMax}" y2="${y}" stroke="#475569" stroke-width="2"/>`;
+      [-6, -4, -2, 0, 2, 4].forEach(val => {
+        const tx = lpToX(val);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 5}" stroke="#64748b" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 16}" fill="#64748b" font-size="8.5" text-anchor="middle">${val}</text>`;
+      });
+
+      // 10. Responder Axis (Probability: 0.05 to 0.95)
+      y += 45;
+      svgHtml += `<text x="${xLeft - 15}" y="${y + 4}" fill="#c084fc" font-size="12" font-weight="700" text-anchor="end">Responder</text>`;
+      const pTicks = [0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.95];
+      const xPMin = lpToX(Math.log(0.05 / 0.95));
+      const xPMax = lpToX(Math.log(0.95 / 0.05));
+      svgHtml += `<line x1="${xPMin}" y1="${y}" x2="${xPMax}" y2="${y}" stroke="#a855f7" stroke-width="2.5"/>`;
+      pTicks.forEach(pt => {
+        const vLp = Math.log(pt / (1 - pt));
+        const tx = lpToX(vLp);
+        svgHtml += `<line x1="${tx}" y1="${y}" x2="${tx}" y2="${y + 6}" stroke="#a855f7" stroke-width="1.5"/>`;
+        svgHtml += `<text x="${tx}" y="${y + 18}" fill="#c084fc" font-size="8.5" text-anchor="middle">${(pt*100).toFixed(0)}%</text>`;
+      });
+
+      svg.innerHTML = svgHtml;
+    }
+
+    function m7_generateEmrProgressNote(totalPoints, lp, prob) {
+      const isHighRisk = totalPoints < m7_COEF.opt_cutoff_pts;
+      const now = new Date();
+      const dateStr = now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, '0') + "-" +
+        String(now.getDate()).padStart(2, '0') + " " +
+        String(now.getHours()).padStart(2, '0') + ":" +
+        String(now.getMinutes()).padStart(2, '0');
+
+      const tierLabels = { low: 'Low (0–2.5, Floor Effect)', mid: 'Middle (3.0–5.5, Maximal Headroom)', high: 'High (≥6.0, Severe Necrotic)' };
+
+      let note = `====================================================================
+NMOSD ACUTE ATTACK DAY-0 BEDSIDE STEROID RESPONSIVENESS EVALUATION
+Tool: 7-Feature Partial Engineered Bedside Nomogram (Fig-02 Version B)
+Author Reference: Linkou Chang Gung Memorial Hospital NMOSD Cohort
+Evaluation Timestamp: ${dateStr}
+====================================================================
+DAY-0 PRE-TREATMENT PREDICTORS:
+- Azathioprine (AZA) Maintenance: ${ m7_state.aza ? 'YES (Active AZA Exposure)' : 'NO (Naive / Non-AZA)' }
+- Mean Corpuscular Volume (MCV): ${ m7_state.mcv.toFixed(1) } fL
+- Admission EDSS Severity: ${ m7_state.edssVal.toFixed(1) } [Tier: ${tierLabels[m7_state.edssTier]}]
+- Platelet Count (PLT): ${ m7_state.plt } x10^3/uL
+- Red Cell Distribution Width (RDW): ${ m7_state.rdw.toFixed(1) } %
+- Serum Creatinine: ${ m7_state.cr.toFixed(2) } mg/dL
+- Severe Motor Weakness Phenotype: ${ m7_state.motor ? 'PRESENT (Deficit Present)' : 'Absent (Spared)' }
+
+ENGINEERED MODEL PREDICTION & METRICS:
+- Total Nomogram Score: ${totalPoints.toFixed(1)} Points (Cutoff: 98.7 Points)
+- Linear Predictor: ${lp.toFixed(2)}
+- Predicted Steroid Responsiveness: ${(prob * 100).toFixed(1)}% (Cutoff: 37.3%)
+- Model AUROC: ${ m7_COEF.auroc }
+- Clinical Risk Category: ${isHighRisk ? '🚨 HIGH FAILURE RISK (NPV 80.4%)' : '✅ FAVORABLE RESPONDER'}
+
+DAY-0 CLINICAL ACTION PROTOCOL:
+${isHighRisk ?
+`- HIGH RISK FOR PULSED STEROID FAILURE: Patient score is below 98.7 points (80.4% NPV).
+- DO NOT WAIT 7–14 DAYS TO CONFIRM CLINICAL NON-RESPONSE!
+- Action: Initiate frontline IVMP (1g/d x 3–5d) + immediately establish central venous vascular access.
+- Mobilize rescue apheresis (Plasma Exchange [PLEX] or Immunoadsorption [IA]) within <= 48–72 hours.` :
+`- FAVORABLE STEROID RESPONSIVENESS: Score >= 98.7 points (predicted response > 37.3%).
+- Proceed with frontline high-dose IVMP monotherapy (1,000 mg/d x 3–5d); observe closely for secondary deterioration.`}
+====================================================================`;
+
+      const emrElem = document.getElementById('m7_txtEmrNote');
+      if (emrElem) emrElem.value = note;
+    }
+
+    function m7_copyEmrNote() {
+      const note = document.getElementById('m7_txtEmrNote').value;
+      navigator.clipboard.writeText(note).then(() => {
+        const btn = document.getElementById('m7_copyBtnText');
+        btn.textContent = '✓ Note Copied to Clipboard!';
+        setTimeout(() => { btn.textContent = 'Copy EMR Note to Clipboard'; }, 2500);
+      }).catch(err => {
+        alert('Please manually copy the text in the box above.');
+      });
+    }
+    
+
+// --- TAB SWITCHER LOGIC ---
+function switchMainTab(tabId) {
+  const tabBtn6 = document.getElementById('tabBtn6');
+  const tabBtn7 = document.getElementById('tabBtn7');
+  const pane6 = document.getElementById('pane6feature');
+  const pane7 = document.getElementById('pane7feature');
+
+  if (tabId === '7feature') {
+    tabBtn7.className = 'tab-btn active';
+    tabBtn6.className = 'tab-btn';
+    pane7.className = 'tab-pane active';
+    pane6.className = 'tab-pane';
+    window.location.hash = '#7feature';
+    m7_updateCalculations();
+  } else {
+    tabBtn6.className = 'tab-btn active';
+    tabBtn7.className = 'tab-btn';
+    pane6.className = 'tab-pane active';
+    pane7.className = 'tab-pane';
+    window.location.hash = '#6feature';
+    m6_updateCalculations();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  m6_init();
+  m7_init();
+
+  if (window.location.hash === '#7feature') {
+    switchMainTab('7feature');
+  } else {
+    switchMainTab('6feature');
+  }
+});
+</script>
+</body>
+</html>
