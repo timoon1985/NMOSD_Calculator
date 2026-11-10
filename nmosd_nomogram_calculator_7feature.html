@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NMOSD Acute Attack Corticosteroid Bedside Calculator (Model 2: Feature-Engineered 7-Variable Nomogram)</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --bg-input: #0f172a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --border-color: #334155;
+      --border-focus: #38bdf8;
+      --primary: #0ea5e9;
+      --primary-hover: #0284c7;
+      --accent-teal: #14b8a6;
+      --accent-purple: #a855f7;
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --danger-border: rgba(239, 68, 68, 0.35);
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.12);
+      --success-border: rgba(16, 185, 129, 0.35);
+      --warning: #f59e0b;
+      --card-radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg-primary); color: var(--text-main); line-height: 1.5; padding: 20px 16px 40px; min-height: 100vh; }
+    .container { max-width: 1280px; margin: 0 auto; }
+
+    /* SWITCH BANNER */
+    .switch-banner {
+      background: rgba(168, 85, 247, 0.10);
+      border: 1px solid rgba(168, 85, 247, 0.30);
+      border-radius: var(--card-radius);
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .switch-banner strong { color: #c084fc; font-size: 0.95rem; }
+    .switch-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .switch-link {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .switch-link:hover { background: var(--bg-card-hover); border-color: var(--primary); color: #38bdf8; }
+    .switch-link.active-link { background: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.4); color: #c084fc; }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-md);
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(168, 85, 247, 0.18);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    h1 { font-size: 1.85rem; font-weight: 800; color: #f8fafc; margin-bottom: 8px; line-height: 1.25; }
+    .subtitle { color: var(--text-muted); font-size: 0.98rem; max-width: 1000px; }
+    .header-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; font-size: 0.85rem; color: var(--text-dim); }
+    .header-meta span strong { color: #e2e8f0; }
+
+    /* PRESETS */
+    .presets-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-secondary);
+      padding: 10px 16px;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+    .preset-label { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin-right: 4px; }
+    .btn-preset {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-preset:hover { background: var(--bg-card-hover); border-color: var(--accent-purple); color: #c084fc; }
+
+    /* MAIN COMPUTATION GRID */
+    .main-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
+    @media (min-width: 1024px) { .main-grid { grid-template-columns: 1.15fr 0.85fr; } }
+    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--card-radius); padding: 24px; box-shadow: var(--shadow-md); }
+    .card-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+    .card-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
+
+    /* FEATURE GROUPS */
+    .feature-group {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+    .feature-group:hover, .feature-group:focus-within { border-color: var(--border-focus); }
+    .feature-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .feature-label { font-weight: 600; font-size: 0.95rem; color: #e2e8f0; display: flex; align-items: center; gap: 6px; }
+    .feature-points { font-weight: 700; font-size: 0.95rem; color: #c084fc; background: rgba(168, 85, 247, 0.15); padding: 2px 10px; border-radius: 6px; }
+    .feature-formula { font-size: 0.78rem; color: var(--text-dim); margin-bottom: 10px; }
+    .input-row { display: flex; align-items: center; gap: 12px; }
+    .number-input {
+      width: 120px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .number-input:focus { border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+    .slider {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border-color);
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-purple);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    /* DUAL MODE & BUTTONS */
+    .dual-mode-container { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .auto-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+    .auto-badge.active-norm { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34d399; }
+    .auto-badge.active-warn { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171; }
+    .auto-badge.active-mid { background: rgba(14, 165, 233, 0.15); border-color: rgba(14, 165, 233, 0.4); color: #38bdf8; }
+    .btn-group { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .toggle-btn {
+      flex: 1;
+      min-width: 100px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .toggle-btn:hover { background: var(--bg-card-hover); color: var(--text-main); }
+    .toggle-btn.active { background: rgba(168, 85, 247, 0.25); border-color: #a855f7; color: #f3e8ff; }
+
+    /* RESULTS BOX */
+    .result-score-box {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .score-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+    .score-val { font-size: 3.2rem; font-weight: 800; line-height: 1; color: #c084fc; font-variant-numeric: tabular-nums; }
+    .score-max { font-size: 1.1rem; color: var(--text-dim); font-weight: 500; }
+    .prob-val { font-size: 2.2rem; font-weight: 800; color: #f8fafc; margin-top: 8px; }
+
+    /* ALERT CARDS */
+    .alert-card { border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; border: 1px solid; }
+    .alert-card.danger { background: var(--danger-bg); border-color: var(--danger-border); }
+    .alert-card.success { background: var(--success-bg); border-color: var(--success-border); }
+    .alert-title { font-size: 1.15rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .alert-card.danger .alert-title { color: #f87171; }
+    .alert-card.success .alert-title { color: #34d399; }
+    .alert-desc { font-size: 0.9rem; line-height: 1.45; color: #e2e8f0; margin-bottom: 12px; }
+    .protocol-box { background: rgba(15, 23, 42, 0.7); border-radius: 8px; padding: 12px 14px; font-size: 0.85rem; border-left: 3px solid; }
+    .alert-card.danger .protocol-box { border-left-color: var(--danger); }
+    .alert-card.success .protocol-box { border-left-color: var(--success); }
+    .protocol-box strong { display: block; margin-bottom: 4px; color: #fff; }
+
+    /* UNIFIED BREAKDOWN TABLE */
+    .table-container { overflow-x: auto; margin-top: 10px; }
+    .breakdown-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+    .breakdown-table th {
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-dim);
+      font-weight: 700;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .breakdown-table td { padding: 10px 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.4); color: var(--text-main); }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .var-name { font-weight: 600; color: #e2e8f0; }
+    .var-val { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+    .var-pts { font-weight: 700; color: #c084fc; font-variant-numeric: tabular-nums; }
+    .table-bar-track { width: 100%; min-width: 80px; height: 8px; background: rgba(51, 65, 85, 0.6); border-radius: 4px; overflow: hidden; }
+    .table-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+    .total-row td { font-weight: 800; font-size: 0.95rem; border-top: 2px solid var(--border-color); padding-top: 12px; color: #fff; }
+
+    /* COMPACT STATISTICAL PERFORMANCE CARD (NO IMAGES) */
+    .metrics-summary-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+    }
+    .metrics-card-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .metrics-card-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .badge-stat {
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .metrics-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .stat-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .stat-box-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .stat-box-val {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-box-val.highlight-blue { color: #38bdf8; }
+    .stat-box-val.highlight-purple { color: #c084fc; }
+    .stat-box-val.highlight-red { color: #f87171; }
+    .stat-box-val.highlight-green { color: #34d399; }
+    .stat-box-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* EMR PROGRESS NOTE */
+    .emr-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+    }
+    .emr-textarea {
+      width: 100%;
+      height: 200px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: #e2e8f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      padding: 14px;
+      resize: vertical;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .emr-actions { display: flex; justify-content: space-between; align-items: center; }
+    .btn-copy {
+      background: var(--accent-purple);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .btn-copy:hover { opacity: 0.9; }
+    .copy-toast { font-size: 0.85rem; color: #34d399; font-weight: 600; opacity: 0; transition: opacity 0.3s; }
+    .copy-toast.show { opacity: 1; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border-color); padding-top: 24px; color: var(--text-dim); font-size: 0.85rem; line-height: 1.6; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .metric-badge { background: rgba(30, 41, 59, 0.6); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; }
+    .metric-badge strong { color: #e2e8f0; display: block; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- TOP SWITCH BANNER -->
+    <div class="switch-banner">
+      <div>
+        <strong>Currently Active:</strong> Model 2: Feature-Engineered 7-Variable Bedside Nomogram
+      </div>
+      <div class="switch-links">
+        <a href="nmosd_nomogram_calculator_6feature.html" class="switch-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          Switch to Model 1 (Frontline 6-Feature)
+        </a>
+        <a href="nmosd_nomogram_calculator.html" class="switch-link active-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line></svg>
+          Unified Dual-Model Suite
+        </a>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+      <div class="header-badge">Feature-Engineered Bedside Model</div>
+      <h1>NMOSD Acute Attack Corticosteroid Bedside Calculator</h1>
+      <p class="subtitle">
+        Predicting day-28 functional responsiveness to high-dose pulsed intravenous methylprednisolone (IVMP) in anti-AQP4+ Neuromyelitis Optica Spectrum Disorder with engineered biomarker interactions.
+      </p>
+      <div class="header-meta">
+        <span>AUROC: <strong>0.733 (95% CI: 0.635–0.831)</strong></span>
+        <span>Decision Threshold: <strong>153.9 Points (Prob: 38.2%)</strong></span>
+        <span>Negative Predictive Value: <strong style="color:#f87171;">80.6%</strong></span>
+        <span>Golden Window: <strong>≤ 48–72 Hours</strong></span>
+      </div>
+    </header>
+
+    <!-- PRESETS BAR -->
+    <div class="presets-container">
+      <span class="preset-label">Quick Clinical Presets:</span>
+      <button class="btn-preset" onclick="loadPreset('high_risk')">🚨 High-Risk Failure Attack</button>
+      <button class="btn-preset" onclick="loadPreset('typical_nonresp')">⚠️ Typical Non-Responder</button>
+      <button class="btn-preset" onclick="loadPreset('responder')">✅ Favorable Responder</button>
+      <button class="btn-preset" onclick="loadPreset('severe_motor')">⚡ Severe Motor Attack</button>
+      <button class="btn-preset" onclick="loadPreset('reset_median')">↺ Reset to Median</button>
+    </div>
+
+    <!-- MAIN COMPUTATION GRID -->
+    <div class="main-grid">
+
+      <!-- LEFT: INPUTS -->
+      <div class="card">
+        <div class="card-title">
+          <span>Patient Admission Parameters</span>
+          <button onclick="loadPreset('reset_median')" style="background:none; border:none; color:var(--text-muted); font-size:0.85rem; font-weight:600; cursor:pointer; text-decoration:underline;">Reset Defaults</button>
+        </div>
+        <div class="card-subtitle">
+          Engineered laboratory flags, AZA interaction, and 3-tier EDSS.
+        </div>
+
+        <!-- 1 & 2. MCV & AZA Interaction -->
+        <div class="feature-group">
+          <div class="feature-header">
+            <span class="feature-label">1 & 2. MCV & Azathioprine (AZA) Interaction</span>
+            <span class="feature-points" id="pts_mcv">0.00 pts</span>
+          </div>
+          <div class="feature-formula" id="formula_mcv">Formula: Points = 49.30 - 0.32533 × MCV (AZA-)</div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:4px;">
+              Azathioprine (AZA) Maintenance Therapy Prior to Attack:
+            </label>
+            <div class="btn-group">
+              <button type="button" class="toggle-btn active" id="btn_aza_no" onclick="setAza(false)">No [AZA(−)]</button>
+              <button type="button" class="toggle-btn" id="btn_aza_yes" onclick="setAza(true)">Yes [AZA(+)]</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <input type="number" id="inp_mcv" class="number-input" min="50" max="115" step="0.5" value="88.0" oninput="syncMcv(this.value, 'inp')" onchange="formatMcv()">
+            <input type="range" id="rng_mcv" class="slider" min="50" max="115" step="0.5" value="88.0" oninput="syncMcv(this.value, 'rng')">
+            <span style="font-size:0.85rem; color:var(--text-dim); width:30px;">fL</span>
+          </div>
+        </div>
+
+        <!-- 3. Serum Creatinine -->
+        <div class="feature-group">
+          <div class="feature-header">
+            <span class="feature-label">3. Serum Creatinine</span>
+            <span class="feature-points" id="pts_cr">0.00 pts</span>
+          </div>
+          <div class="feature-formula">Formula: Points = 30.26 - 12.104 × Creatinine (Range: 0.0 - 2.6 mg/dL)</div>
+          <div class="input-row">
+            <input type="number" id="inp_cr" class="number-input" min="0.0" max="2.6" step="0.05" value="0.80" oninput="syncCr(this.value, 'inp')" onchange="formatCr()">
+            <input type="range" id="rng_cr" class="slider" min="0.0" max="2.6" step="0.05" value="0.80" oninput="syncCr(this.value, 'rng')">
+            <span style="font-size:0.85rem; color:var(--text-dim); width:45px;">mg/dL</span>
+          </div>
+        </div>
+
+        <!-- 4. Admission EDSS (Dual-Mode) -->
+        <div class="feature-group">
+          <div class="feature-header">
+            <span class="feature-label">4. Admission EDSS (3-Tier Engineered)</span>
+            <span class="feature-points" id="pts_edss">0.00 pts</span>
+          </div>
+          <div class="feature-formula">Low (0–2.5): 0.00 pts | Middle (3.0–5.5): 9.16 pts | High (6.0–10.0): 6.09 pts</div>
+          <div class="input-row">
+            <input type="number" id="inp_edss" class="number-input" min="0" max="10" step="0.5" value="4.0" oninput="syncEdss(this.value, 'inp')" onchange="formatEdss()">
+            <input type="range" id="rng_edss" class="slider" min="0" max="10" step="0.5" value="4.0" oninput="syncEdss(this.value, 'rng')">
+            <span style="font-size:0.85rem; color:var(--text-dim); width:45px;">Score</span>
+          </div>
+          <div class="dual-mode-container">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.8rem; color:var(--text-dim);">Auto-Classification:</span>
+              <span class="auto-badge active-mid" id="badge_edss">Tier: Middle (3.0–5.5)</span>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="toggle-btn" id="btn_edss_l" onclick="setEdssCategory('L')">Low (0–2.5): 0 pts</button>
+              <button type="button" class="toggle-btn active" id="btn_edss_m" onclick="setEdssCategory('M')">Middle (3.0–5.5): 9.16 pts</button>
+              <button type="button" class="toggle-btn" id="btn_edss_h" onclick="setEdssCategory('H')">High (6.0–10.0): 6.09 pts</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Platelets (Dual-Mode) -->
+        <div class="feature-group">
+          <div class="feature-header">
+            <span class="feature-label">5. Platelets & Abnormal Flag</span>
+            <span class="feature-points" id="pts_plt">0.00 pts</span>
+          </div>
+          <div class="feature-formula">Normal (150–450): 0.00 pts | Abnormal (&lt;150 or &gt;450): 4.84 pts</div>
+          <div class="input-row">
+            <input type="number" id="inp_plt" class="number-input" min="10" max="600" step="5" value="220" oninput="syncPlt(this.value, 'inp')" onchange="formatPlt()">
+            <input type="range" id="rng_plt" class="slider" min="10" max="600" step="5" value="220" oninput="syncPlt(this.value, 'rng')">
+            <span style="font-size:0.85rem; color:var(--text-dim); width:55px;">10³/μL</span>
+          </div>
+          <div class="dual-mode-container">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.8rem; color:var(--text-dim);">Auto-Classification:</span>
+              <span class="auto-badge active-norm" id="badge_plt">Normal (150–450 10³/μL)</span>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="toggle-btn active" id="btn_plt_no" onclick="setPltAbnormal(false)">Normal (No): 0 pts</button>
+              <button type="button" class="toggle-btn" id="btn_plt_yes" onclick="setPltAbnormal(true)">Abnormal (Yes): +4.84 pts</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. RDW (Dual-Mode) -->
+        <div class="feature-group">
+          <div class="feature-header">
+            <span class="feature-label">6. RDW & Low RDW Indicator</span>
+            <span class="feature-points" id="pts_rdw">0.00 pts</span>
+          </div>
+          <div class="feature-formula">Low (&lt;11.5%): 0.00 pts | Normal/Elevated (≥11.5%): 100.00 pts</div>
+          <div class="input-row">
+            <input type="number" id="inp_rdw" class="number-input" min="9.0" max="26.0" step="0.1" value="13.5" oninput="syncRdw(this.value, 'inp')" onchange="formatRdw()">
+            <input type="range" id="rng_rdw" class="slider" min="9.0" max="26.0" step="0.1" value="13.5" oninput="syncRdw(this.value, 'rng')">
+            <span style="font-size:0.85rem; color:var(--text-dim); width:30px;">%</span>
+          </div>
+          <div class="dual-mode-container">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.8rem; color:var(--text-dim);">Auto-Classification:</span>
+              <span class="auto-badge active-mid" id="badge_rdw">Normal/Elevated (≥11.5%)</span>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="toggle-btn" id="btn_rdw_yes" onclick="setRdwLow(true)">Low (&lt;11.5%): 0 pts</button>
+              <button type="button" class="toggle-btn active" id="btn_rdw_no" onclick="setRdwLow(false)">Normal/Elevated (≥11.5%): +100.0 pts</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Motor Weakness -->
+        <div class="feature-group">
+          <div class="feature-header">
+            <span class="feature-label">7. Motor Weakness (Attack Phenotype)</span>
+            <span class="feature-points" id="pts_wk">0.00 pts</span>
+          </div>
+          <div class="feature-formula">Present (Yes): 0.00 pts | Absent (No): +3.62 pts</div>
+          <div class="btn-group">
+            <button type="button" class="toggle-btn active" id="btn_wk_yes" onclick="setWeakness(true)">Present (Weakness = Yes): 0 pts</button>
+            <button type="button" class="toggle-btn" id="btn_wk_no" onclick="setWeakness(false)">Absent (Weakness = No): +3.62 pts</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div style="display:flex; flex-direction:column; gap:24px;">
+
+        <div class="card">
+          <div class="card-title">
+            <span>Nomogram Risk Output</span>
+            <span style="font-size:0.8rem; background:rgba(168,85,247,0.2); color:#c084fc; padding:2px 8px; border-radius:4px; font-weight:700;">7-Variable Model</span>
+          </div>
+
+          <!-- SCORE BOX -->
+          <div class="result-score-box">
+            <div class="score-label">Total Points Score</div>
+            <div>
+              <span class="score-val" id="disp_total_points">150.4</span>
+              <span class="score-max"> / 200 pts</span>
+            </div>
+            <div style="margin-top:14px;">
+              <div class="score-label">Predicted Steroid Responsiveness</div>
+              <div class="prob-val" id="disp_prob">26.9%</div>
+            </div>
+          </div>
+
+          <!-- DECISION ALERT -->
+          <div class="alert-card danger" id="alert_box">
+            <div class="alert-title" id="alert_title">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>HIGH RISK OF FRONTLINE STEROID FAILURE</span>
+            </div>
+            <div class="alert-desc" id="alert_desc">
+              Total Points &lt; 153.9 points indicates an <strong>80.6% negative predictive value (NPV)</strong> of failing frontline high-dose IVMP monotherapy.
+            </div>
+            <div class="protocol-box">
+              <strong>Actionable Day-0 Clinical Decision Protocol:</strong>
+              <span id="protocol_text">Do NOT wait 7–14 days. Start IVMP (1,000 mg/d) and immediately arrange central venous catheterization to mobilize rescue plasmapheresis within ≤ 48–72 hours.</span>
+            </div>
+          </div>
+
+          <!-- UNIFIED POINT BREAKDOWN TABLE -->
+          <div class="table-container">
+            <table class="breakdown-table">
+              <thead>
+                <tr>
+                  <th>Predictor Variable</th>
+                  <th>Patient Value / Tier</th>
+                  <th style="text-align:right;">Points</th>
+                  <th style="width:120px;">Weight Bar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="var-name">MCV & AZA Interaction</td>
+                  <td class="var-val" id="tb_val_mcv">88.0 fL [AZA(-)]</td>
+                  <td class="var-pts" style="text-align:right;" id="tb_pts_mcv">20.67</td>
+                  <td><div class="table-bar-track"><div class="table-bar-fill" id="tb_bar_mcv" style="width:35%; background:#38bdf8;"></div></div></td>
+                </tr>
+                <tr>
+                  <td class="var-name">Serum Creatinine</td>
+                  <td class="var-val" id="tb_val_cr">0.80 mg/dL</td>
+                  <td class="var-pts" style="text-align:right;" id="tb_pts_cr">20.58</td>
+                  <td><div class="table-bar-track"><div class="table-bar-fill" id="tb_bar_cr" style="width:68%; background:#818cf8;"></div></div></td>
+                </tr>
+                <tr>
+                  <td class="var-name">Admission EDSS (3-Tier)</td>
+                  <td class="var-val" id="tb_val_edss">Middle (3.0–5.5)</td>
+                  <td class="var-pts" style="text-align:right;" id="tb_pts_edss">9.16</td>
+                  <td><div class="table-bar-track"><div class="table-bar-fill" id="tb_bar_edss" style="width:100%; background:#c084fc;"></div></div></td>
+                </tr>
+                <tr>
+                  <td class="var-name">Abnormal Platelets Flag</td>
+                  <td class="var-val" id="tb_val_plt">Normal (150–450)</td>
+                  <td class="var-pts" style="text-align:right;" id="tb_pts_plt">0.00</td>
+                  <td><div class="table-bar-track"><div class="table-bar-fill" id="tb_bar_plt" style="width:0%; background:#f472b6;"></div></div></td>
+                </tr>
+                <tr>
+                  <td class="var-name">RDW Status (Low vs Norm)</td>
+                  <td class="var-val" id="tb_val_rdw">Normal/Elevated (≥11.5%)</td>
+                  <td class="var-pts" style="text-align:right;" id="tb_pts_rdw">100.00</td>
+                  <td><div class="table-bar-track"><div class="table-bar-fill" id="tb_bar_rdw" style="width:100%; background:#fb923c;"></div></div></td>
+                </tr>
+                <tr>
+                  <td class="var-name">Motor Weakness Phenotype</td>
+                  <td class="var-val" id="tb_val_wk">Present</td>
+                  <td class="var-pts" style="text-align:right;" id="tb_pts_wk">0.00</td>
+                  <td><div class="table-bar-track"><div class="table-bar-fill" id="tb_bar_wk" style="width:0%; background:#34d399;"></div></div></td>
+                </tr>
+                <tr class="total-row">
+                  <td colspan="2">Total Nomogram Points Sum</td>
+                  <td class="var-pts" style="text-align:right;" id="tb_pts_total">150.41</td>
+                  <td style="font-size:0.75rem; color:var(--text-muted); text-align:right;">Max 200 pts</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- COMPACT STATISTICAL PERFORMANCE CARD (NO IMAGES) -->
+    <div class="metrics-summary-card">
+      <div class="metrics-card-header">
+        <div>
+          <h3>Statistical Model Performance & Decision Thresholds</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted);">
+            Validated discrimination metrics, negative predictive value, and acute triage directives calibrated on anti-AQP4+ NMOSD relapses.
+          </p>
+        </div>
+        <span class="badge-stat">Repeated CV</span>
+      </div>
+      <div class="metrics-stat-grid">
+        <div class="stat-box">
+          <div class="stat-box-label">Decision Cutoff Score</div>
+          <div class="stat-box-val highlight-blue">153.9 Pts</div>
+          <div class="stat-box-sub">Probability Threshold: 38.2%</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Negative Predictive Value (NPV)</div>
+          <div class="stat-box-val highlight-red">80.6%</div>
+          <div class="stat-box-sub">High certainty of non-response</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Model Discrimination (AUROC)</div>
+          <div class="stat-box-val highlight-purple">0.733</div>
+          <div class="stat-box-sub">95% CI: 0.635–0.831</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Golden Rescue Window</div>
+          <div class="stat-box-val highlight-green">≤ 48–72h</div>
+          <div class="stat-box-sub">Day-0 Preemptive Apheresis Triage</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FULL WIDTH EMR CARD -->
+    <div class="emr-card">
+      <div class="card-title">
+        <span>One-Click EMR Progress Note Generator</span>
+        <button class="btn-copy" onclick="copyEmrNote()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy EMR Note
+        </button>
+      </div>
+      <div class="card-subtitle">
+        Standardized clinical documentation for acute inpatient relapse notes and neurological ICU progress charting.
+      </div>
+      <textarea id="emr_text" class="emr-textarea" readonly></textarea>
+      <div class="emr-actions">
+        <span class="copy-toast" id="copy_toast">Progress note copied to clipboard!</span>
+        <span style="font-size:0.8rem; color:var(--text-dim);">Conforms to STROBE/TRIPOD reporting guidelines.</span>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>
+        <strong>Clinical Disclaimer:</strong> Calibrated for anti-AQP4+ Neuromyelitis Optica Spectrum Disorder (NMOSD) relapses requiring pulsed corticosteroid therapy. Designed to eliminate observational delays and identify patients who benefit from hyperacute rescue apheresis within the critical 48-to-72-hour golden therapeutic window.
+      </p>
+      <p style="margin-top:6px;">
+        Linkou Chang Gung Memorial Hospital, Department of Neurology. Principal Investigator: Kuo-Hsuan Chang, MD, PhD.
+      </p>
+    </footer>
+
+  </div>
+
+  <script>
+    const state = {
+      mcv: 88.0,
+      aza: false,
+      cr: 0.80,
+      edssScore: 4.0,
+      edssTier: 'M',
+      pltCount: 220,
+      pltAbnormal: false,
+      rdwVal: 13.5,
+      rdwLow: false,
+      weakness: true
+    };
+
+    const CUTOFF_POINTS = 153.9;
+
+    function calcPoints() {
+      let mcvPts = state.aza 
+        ? Math.max(0, 109.40 - 0.9945 * state.mcv) 
+        : Math.max(0, 49.30 - 0.32533 * state.mcv);
+
+      let crPts = Math.max(0, 30.26 - 12.104 * state.cr);
+
+      let edssPts = 0;
+      if (state.edssTier === 'M') edssPts = 9.16;
+      else if (state.edssTier === 'H') edssPts = 6.09;
+      else edssPts = 0.0;
+
+      let pltPts = state.pltAbnormal ? 4.84 : 0.0;
+      let rdwPts = state.rdwLow ? 0.0 : 100.0;
+      let wkPts = state.weakness ? 0.0 : 3.62;
+
+      const totalPoints = mcvPts + crPts + edssPts + pltPts + rdwPts + wkPts;
+      const lp = 0.14796 * totalPoints - 23.25568;
+      const prob = 1.0 / (1.0 + Math.exp(-lp));
+
+      return { mcvPts, crPts, edssPts, pltPts, rdwPts, wkPts, totalPoints, lp, prob };
+    }
+
+    function updateUI() {
+      const res = calcPoints();
+
+      document.getElementById('pts_mcv').textContent = res.mcvPts.toFixed(2) + ' pts';
+      document.getElementById('pts_cr').textContent = res.crPts.toFixed(2) + ' pts';
+      document.getElementById('pts_edss').textContent = res.edssPts.toFixed(2) + ' pts';
+      document.getElementById('pts_plt').textContent = res.pltPts.toFixed(2) + ' pts';
+      document.getElementById('pts_rdw').textContent = res.rdwPts.toFixed(2) + ' pts';
+      document.getElementById('pts_wk').textContent = res.wkPts.toFixed(2) + ' pts';
+
+      document.getElementById('disp_total_points').textContent = res.totalPoints.toFixed(1);
+      document.getElementById('disp_prob').textContent = (res.prob * 100).toFixed(1) + '%';
+
+      // Table Values
+      const azaStr = state.aza ? '[AZA(+)]' : '[AZA(-)]';
+      document.getElementById('tb_val_mcv').textContent = `${state.mcv.toFixed(1)} fL ${azaStr}`;
+      document.getElementById('tb_pts_mcv').textContent = res.mcvPts.toFixed(2);
+      document.getElementById('tb_bar_mcv').style.width = Math.min(100, (res.mcvPts / 59.67) * 100) + '%';
+
+      document.getElementById('tb_val_cr').textContent = state.cr.toFixed(2) + ' mg/dL';
+      document.getElementById('tb_pts_cr').textContent = res.crPts.toFixed(2);
+      document.getElementById('tb_bar_cr').style.width = Math.min(100, (res.crPts / 30.26) * 100) + '%';
+
+      const edssTierStr = state.edssTier === 'L' ? 'Low (0–2.5)' : (state.edssTier === 'M' ? 'Middle (3.0–5.5)' : 'High (6.0–10.0)');
+      document.getElementById('tb_val_edss').textContent = edssTierStr;
+      document.getElementById('tb_pts_edss').textContent = res.edssPts.toFixed(2);
+      document.getElementById('tb_bar_edss').style.width = Math.min(100, (res.edssPts / 9.16) * 100) + '%';
+
+      const pltFlagStr = state.pltAbnormal ? 'Abnormal (<150 or >450)' : 'Normal (150–450)';
+      document.getElementById('tb_val_plt').textContent = pltFlagStr;
+      document.getElementById('tb_pts_plt').textContent = res.pltPts.toFixed(2);
+      document.getElementById('tb_bar_plt').style.width = Math.min(100, (res.pltPts / 4.84) * 100) + '%';
+
+      const rdwFlagStr = state.rdwLow ? 'Low (<11.5%)' : 'Normal/Elevated (≥11.5%)';
+      document.getElementById('tb_val_rdw').textContent = rdwFlagStr;
+      document.getElementById('tb_pts_rdw').textContent = res.rdwPts.toFixed(2);
+      document.getElementById('tb_bar_rdw').style.width = Math.min(100, (res.rdwPts / 100.0) * 100) + '%';
+
+      document.getElementById('tb_val_wk').textContent = state.weakness ? 'Present' : 'Absent';
+      document.getElementById('tb_pts_wk').textContent = res.wkPts.toFixed(2);
+      document.getElementById('tb_bar_wk').style.width = Math.min(100, (res.wkPts / 3.62) * 100) + '%';
+
+      document.getElementById('tb_pts_total').textContent = res.totalPoints.toFixed(2);
+
+      // Alert
+      const alertBox = document.getElementById('alert_box');
+      const alertTitle = document.getElementById('alert_title');
+      const alertDesc = document.getElementById('alert_desc');
+
+      if (res.totalPoints < CUTOFF_POINTS) {
+        alertBox.className = 'alert-card danger';
+        alertTitle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg><span>HIGH RISK OF FRONTLINE STEROID FAILURE</span>';
+        alertDesc.innerHTML = `Total Points (&lt; 153.9 pts) indicates an <strong>80.6% negative predictive value (NPV)</strong> of acute corticosteroid failure (Predicted Responsiveness: <strong>${(res.prob * 100).toFixed(1)}%</strong>).`;
+      } else {
+        alertBox.className = 'alert-card success';
+        alertTitle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><span>FAVORABLE STEROID RESPONSIVENESS EXPECTED</span>';
+        alertDesc.innerHTML = `Total Points (≥ 153.9 pts) indicates a favorable probability of acute steroid response (Predicted Responsiveness: <strong>${(res.prob * 100).toFixed(1)}%</strong>).`;
+      }
+
+      // EMR Note
+      updateEmrNote(res);
+    }
+
+    function updateEmrNote(res) {
+      const isHighRisk = res.totalPoints < CUTOFF_POINTS;
+      const azaStr = state.aza ? 'Yes [AZA(+)]' : 'No [AZA(-)]';
+      const edssTierStr = state.edssTier === 'L' ? 'Low (0-2.5)' : (state.edssTier === 'M' ? 'Middle (3.0-5.5)' : 'High (6.0-10.0)');
+      const pltStr = state.pltAbnormal ? 'Abnormal (<150 or >450)' : 'Normal (150-450)';
+      const rdwStr = state.rdwLow ? 'Low (<11.5%)' : 'Normal/Elevated (≥11.5%)';
+
+      const note = `[NMOSD ACUTE RELAPSE STEROID RESPONSIVENESS (MODEL 2: 7-VARIABLE NOMOGRAM)]
+Patient Baseline Parameters:
+• MCV: ${state.mcv.toFixed(1)} fL (${azaStr}) -> ${res.mcvPts.toFixed(2)} pts
+• Serum Creatinine: ${state.cr.toFixed(2)} mg/dL -> ${res.crPts.toFixed(2)} pts
+• Admission EDSS: ${state.edssScore.toFixed(1)} [Tier: ${edssTierStr}] -> ${res.edssPts.toFixed(2)} pts
+• Platelet Count: ${state.pltCount} 10^3/μL [${pltStr}] -> ${res.pltPts.toFixed(2)} pts
+• RDW: ${state.rdwVal.toFixed(1)}% [${rdwStr}] -> ${res.rdwPts.toFixed(2)} pts
+• Motor Weakness: ${state.weakness ? 'Present' : 'Absent'} -> ${res.wkPts.toFixed(2)} pts
+
+Nomogram Scoring & Risk Stratification:
+• Total Nomogram Points: ${res.totalPoints.toFixed(2)} / 200 pts
+• Predicted Responsiveness Probability: ${(res.prob * 100).toFixed(1)}% (Linear Predictor: ${res.lp.toFixed(3)})
+• Decision Cutoff: 153.9 Points (Probability 38.2% | AUROC 0.733)
+• Risk Stratification: ${isHighRisk ? 'HIGH RISK OF STEROID FAILURE (NPV 80.6%)' : 'FAVORABLE STEROID RESPONSIVENESS'}
+• Action Plan: ${isHighRisk 
+  ? 'High risk of frontline failure (80.6% NPV). Do NOT wait 7-14 days. Arrange central line and mobilize rescue apheresis within <= 48-72h.' 
+  : 'Favorable response profile. Standard frontline IVMP 1,000 mg/d x 3-5 days; observe closely.'}`;
+      document.getElementById('emr_text').value = note;
+    }
+
+    function syncMcv(val, source) {
+      if (val === '' || val === null || isNaN(val)) return;
+      const num = parseFloat(val);
+      state.mcv = num;
+      if (source !== 'inp') {
+        const inp = document.getElementById('inp_mcv');
+        if (inp) inp.value = num;
+      }
+      if (source !== 'rng') {
+        const rng = document.getElementById('rng_mcv');
+        if (rng) rng.value = num;
+      }
+      updateUI();
+    }
+
+    function formatMcv() {
+      let num = parseFloat(state.mcv);
+      if (isNaN(num)) num = 88.0;
+      num = Math.min(115.0, Math.max(50.0, num));
+      state.mcv = num;
+      document.getElementById('inp_mcv').value = num.toFixed(1);
+      document.getElementById('rng_mcv').value = num;
+      updateUI();
+    }
+
+    function setAza(val) {
+      state.aza = val;
+      document.getElementById('btn_aza_no').className = !val ? 'toggle-btn active' : 'toggle-btn';
+      document.getElementById('btn_aza_yes').className = val ? 'toggle-btn active' : 'toggle-btn';
+      document.getElementById('formula_mcv').textContent = val 
+        ? 'Formula: Points = 109.40 - 0.9945 × MCV (AZA+)'
+        : 'Formula: Points = 49.30 - 0.32533 × MCV (AZA-)';
+      updateUI();
+    }
+
+    function syncCr(val, source) {
+      if (val === '' || val === null || isNaN(val)) return;
+      const num = parseFloat(val);
+      state.cr = num;
+      if (source !== 'inp') {
+        const inp = document.getElementById('inp_cr');
+        if (inp) inp.value = num;
+      }
+      if (source !== 'rng') {
+        const rng = document.getElementById('rng_cr');
+        if (rng) rng.value = num;
+      }
+      updateUI();
+    }
+
+    function formatCr() {
+      let num = parseFloat(state.cr);
+      if (isNaN(num)) num = 0.80;
+      num = Math.min(2.60, Math.max(0.00, num));
+      state.cr = num;
+      document.getElementById('inp_cr').value = num.toFixed(2);
+      document.getElementById('rng_cr').value = num;
+      updateUI();
+    }
+
+    function syncEdss(val, source) {
+      if (val === '' || val === null || isNaN(val)) return;
+      const num = parseFloat(val);
+      state.edssScore = num;
+      if (source !== 'inp') {
+        const inp = document.getElementById('inp_edss');
+        if (inp) inp.value = num;
+      }
+      if (source !== 'rng') {
+        const rng = document.getElementById('rng_edss');
+        if (rng) rng.value = num;
+      }
+      if (num <= 2.5) state.edssTier = 'L';
+      else if (num <= 5.5) state.edssTier = 'M';
+      else state.edssTier = 'H';
+      updateEdssButtons();
+      updateUI();
+    }
+
+    function formatEdss() {
+      let num = parseFloat(state.edssScore);
+      if (isNaN(num)) num = 4.0;
+      num = Math.min(10.0, Math.max(0.0, num));
+      state.edssScore = num;
+      document.getElementById('inp_edss').value = num.toFixed(1);
+      document.getElementById('rng_edss').value = num;
+      if (num <= 2.5) state.edssTier = 'L';
+      else if (num <= 5.5) state.edssTier = 'M';
+      else state.edssTier = 'H';
+      updateEdssButtons();
+      updateUI();
+    }
+
+    function setEdssCategory(cat) {
+      state.edssTier = cat;
+      updateEdssButtons();
+      updateUI();
+    }
+
+    function updateEdssButtons() {
+      const cat = state.edssTier;
+      document.getElementById('btn_edss_l').className = (cat === 'L') ? 'toggle-btn active' : 'toggle-btn';
+      document.getElementById('btn_edss_m').className = (cat === 'M') ? 'toggle-btn active' : 'toggle-btn';
+      document.getElementById('btn_edss_h').className = (cat === 'H') ? 'toggle-btn active' : 'toggle-btn';
+      const badge = document.getElementById('badge_edss');
+      if (cat === 'L') { badge.className = 'auto-badge active-norm'; badge.textContent = 'Tier: Low (0–2.5)'; }
+      else if (cat === 'M') { badge.className = 'auto-badge active-mid'; badge.textContent = 'Tier: Middle (3.0–5.5)'; }
+      else { badge.className = 'auto-badge active-warn'; badge.textContent = 'Tier: High (6.0–10.0)'; }
+    }
+
+    function syncPlt(val, source) {
+      if (val === '' || val === null || isNaN(val)) return;
+      const num = parseInt(val, 10);
+      state.pltCount = num;
+      if (source !== 'inp') {
+        const inp = document.getElementById('inp_plt');
+        if (inp) inp.value = num;
+      }
+      if (source !== 'rng') {
+        const rng = document.getElementById('rng_plt');
+        if (rng) rng.value = num;
+      }
+      state.pltAbnormal = (num < 150 || num > 450);
+      updatePltButtons();
+      updateUI();
+    }
+
+    function formatPlt() {
+      let num = parseInt(state.pltCount, 10);
+      if (isNaN(num)) num = 220;
+      num = Math.min(600, Math.max(10, num));
+      state.pltCount = num;
+      document.getElementById('inp_plt').value = num;
+      document.getElementById('rng_plt').value = num;
+      state.pltAbnormal = (num < 150 || num > 450);
+      updatePltButtons();
+      updateUI();
+    }
+
+    function setPltAbnormal(isAbn) {
+      state.pltAbnormal = isAbn;
+      updatePltButtons();
+      updateUI();
+    }
+
+    function updatePltButtons() {
+      const isAbn = state.pltAbnormal;
+      document.getElementById('btn_plt_no').className = !isAbn ? 'toggle-btn active' : 'toggle-btn';
+      document.getElementById('btn_plt_yes').className = isAbn ? 'toggle-btn active' : 'toggle-btn';
+      const badge = document.getElementById('badge_plt');
+      if (isAbn) { badge.className = 'auto-badge active-warn'; badge.textContent = 'Abnormal (<150 or >450 10³/μL)'; }
+      else { badge.className = 'auto-badge active-norm'; badge.textContent = 'Normal (150–450 10³/μL)'; }
+    }
+
+    function syncRdw(val, source) {
+      if (val === '' || val === null || isNaN(val)) return;
+      const num = parseFloat(val);
+      state.rdwVal = num;
+      if (source !== 'inp') {
+        const inp = document.getElementById('inp_rdw');
+        if (inp) inp.value = num;
+      }
+      if (source !== 'rng') {
+        const rng = document.getElementById('rng_rdw');
+        if (rng) rng.value = num;
+      }
+      state.rdwLow = (num < 11.5);
+      updateRdwButtons();
+      updateUI();
+    }
+
+    function formatRdw() {
+      let num = parseFloat(state.rdwVal);
+      if (isNaN(num)) num = 13.5;
+      num = Math.min(26.0, Math.max(9.0, num));
+      state.rdwVal = num;
+      document.getElementById('inp_rdw').value = num.toFixed(1);
+      document.getElementById('rng_rdw').value = num;
+      state.rdwLow = (num < 11.5);
+      updateRdwButtons();
+      updateUI();
+    }
+
+    function setRdwLow(isLow) {
+      state.rdwLow = isLow;
+      updateRdwButtons();
+      updateUI();
+    }
+
+    function updateRdwButtons() {
+      const isLow = state.rdwLow;
+      document.getElementById('btn_rdw_yes').className = isLow ? 'toggle-btn active' : 'toggle-btn';
+      document.getElementById('btn_rdw_no').className = !isLow ? 'toggle-btn active' : 'toggle-btn';
+      const badge = document.getElementById('badge_rdw');
+      if (isLow) { badge.className = 'auto-badge active-warn'; badge.textContent = 'Low RDW (<11.5%)'; }
+      else { badge.className = 'auto-badge active-mid'; badge.textContent = 'Normal/Elevated (≥11.5%)'; }
+    }
+
+    function setWeakness(val) {
+      state.weakness = val;
+      document.getElementById('btn_wk_yes').className = val ? 'toggle-btn active' : 'toggle-btn';
+      document.getElementById('btn_wk_no').className = !val ? 'toggle-btn active' : 'toggle-btn';
+      updateUI();
+    }
+
+    function loadPreset(name) {
+      if (name === 'high_risk') {
+        setAza(false);
+        syncMcv(98.0);
+        syncCr(1.80);
+        syncEdss(7.0);
+        syncPlt(120);
+        syncRdw(10.8);
+        setWeakness(true);
+      } else if (name === 'typical_nonresp') {
+        setAza(false);
+        syncMcv(92.0);
+        syncCr(1.10);
+        syncEdss(5.0);
+        syncPlt(180);
+        syncRdw(11.0);
+        setWeakness(true);
+      } else if (name === 'responder') {
+        setAza(false);
+        syncMcv(75.0);
+        syncCr(0.60);
+        syncEdss(3.5);
+        syncPlt(320);
+        syncRdw(14.5);
+        setWeakness(false);
+      } else if (name === 'severe_motor') {
+        setAza(false);
+        syncMcv(86.0);
+        syncCr(0.90);
+        syncEdss(8.0);
+        syncPlt(240);
+        syncRdw(13.8);
+        setWeakness(true);
+      } else if (name === 'reset_median') {
+        setAza(false);
+        syncMcv(88.0);
+        syncCr(0.80);
+        syncEdss(4.0);
+        syncPlt(220);
+        syncRdw(13.5);
+        setWeakness(true);
+      }
+    }
+
+    function copyEmrNote() {
+      const text = document.getElementById('emr_text').value;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('copy_toast');
+        toast.className = 'copy-toast show';
+        setTimeout(() => { toast.className = 'copy-toast'; }, 2500);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateEdssButtons();
+      updatePltButtons();
+      updateRdwButtons();
+      updateUI();
+    });
+  </script>
+</body>
+</html>
